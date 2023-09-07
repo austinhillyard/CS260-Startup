@@ -1,6 +1,6 @@
 # **NOTES**
 
-### *[README.md](/startup/CS260-Startup/README.md)*
+### *[README.md](/README.md)*
 
 ## Git
 When working with git, your bread and butter is:
