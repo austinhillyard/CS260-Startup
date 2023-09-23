@@ -35,6 +35,8 @@ git push
 
 ### My Domain: gametracker.click
 
+### My Elastic IP Address: 18.205.101.148
+
 ## Caddy
 * Handles rotation of web certificates. Supports HTTPS
 * Acts as a gateway and will redirect subdomain requests properly
@@ -42,6 +44,8 @@ git push
 * HTML files:
     * Directory of files that Caddy servers up when request are made to the root or your web server.
  
+## Push files to AWS server: ```./deployFiles.sh -k <yourpemkey> -h <yourdomain> -s simon```
+
 ## HTTPS
 * Secure version of HTTP, data is encrypted and protected by TLS.
 * Let's Encrypt is a non profit IETF ACME protocol to encrypt requests
