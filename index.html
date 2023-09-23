@@ -14,12 +14,28 @@
             <nav>
                 <!-- Menu area to navigate the user around to the different tools-->
                 <menu>
-                    <li><a href="index.html">Login</a></li>
                     <li><a href="import.html">Import Tool</a></li>
                     <li><a href="tracker.html">Tracker</a></li>
                 </menu>
             </nav>
         </header>
+
+        <main>
+            <h2>Login</h2>
+            <p>Login or create an account</p>
+            <form method="get" action = "tracker.html">
+                <!--Login and Create Account form for users.-->
+                <label for="username">Username:</label>
+                <input type="text" id="username" placeholder="Enter Username" />
+                <label for="password">Password:</label>
+                <input type="password" id="password" placeholder="Enter Password" />
+                <!-- Login Option-->
+                <button type="submit">Login</button>
+                <!-- Create Account Option-->
+                <button type="submit">Create Account</button>
+            </form>
+            
+        </main>
 
     </body>
 </html>
