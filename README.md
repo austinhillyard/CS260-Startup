@@ -66,3 +66,13 @@ I personally have a very hard time working through my backlog of video games. I 
 ![Screenshot of Home page of GameTracker webpage.](<Screenshot 2023-09-18 213851.png>)
 ### Home Page with Menu bar
 ![Screenshot of Home page of GameTracker webpage with menu bar.](<Screenshot 2023-09-18 214247.png>)
+
+# HTML Deliverable
+This deliverable includes the basic HTML structure of the website.
+* **HTML pages** - Three html pages, Login, Tracker, and Import. Import is a mostly one time tool. Tracker is where most the functionality lies.
+* **Links** - The Login page has links to the other pages for now. The buttons also redirect you to the tracker. The other two pages have simple links to the other pages.
+* **Headers and Text** Most things are classified by headers with some small text here and there.
+* **Selection Boxes** On the tracker pages there are two selection boxes. Filters and Sort. Filters is multiselect via the Alt or Shift key. Filters is also grouped, but sort is single select and no groups. This will filter and sort how the games are displayed in the main game view.
+* **Images** The import tool has two picturs representing the specific settings and location to find the profile info needed to make the import tool work
+* **Database** Database info is represented by several tables on the tracker page. I am sure these will be modified in the future once I figure out how to best represent the data. For now they are merely placeholders.
+* **Websocket and Service Calls** How exactly websocket will work I am not sure. For now I am anticipating using Steam's and HowLongToBeat's API to populate data for my database, and this data can be updated via the refresh button is the plan
