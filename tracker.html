@@ -19,5 +19,85 @@
             </nav>
         </header>
 
+        <main>
+            <!--Placeholder for Left Hand Priority List-->
+            <div class="Priority List">
+                <h2>Priority List</h2>
+                <table>
+                    <tr>
+                        <th>Priority 1 games:</th>
+                        <td>
+                            <p>Priority 1 game here</p>
+                        </td>
+                        <td>
+                            <p>Priority 1 game here</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Priority 2 games:</th>
+                        <td>
+                            <p>Priority 2 game here</p>
+                        </td>
+                        <td>
+                            <p>Priority 2 game here</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!--Main database display-->
+            <div class="Games">
+                <h1>Games</h1>
+
+                <!--Filter option for games. Multiple can be selected at once.-->
+                <label for="filter">Filter</label>
+                <select name="filter" id="filter" multiple size="8">
+                    <optgroup label="Played status">
+                        <option value="played">Played</option>
+                        <option value="unplayed">Unplayed</option>
+                    </optgroup>
+                    <optgroup label="Completion">
+                        <option value="completed">Completed</option>
+                        <option value="uncompleted">Uncompleted</option>
+                    </optgroup>
+                    <optgroup label="Genre">
+                        <option value="action">Action</option>
+                        <option value="adventure">Adventure</option>
+                        <option value="casual">Casual</option>
+                        <option value="indie">Indie</option>
+                        <option value="mmo">Massively Multiplayer</option>
+                        <option value="racing">Racing</option>
+                        <option value="rpg">RPG</option>
+                        <option value="simulation">Simulation</option>
+                        <option value="sports">Sports</option>
+                        <option value="strategy">Strategy</option>
+                    </optgroup>
+                    <optgroup label="Time Left to Beat">
+                        <option value="lessThan5Hours">Less than 5 hours</option>
+                        <option value="lessThan10Hours">Less than 10 hours</option>
+                        <option value="lessThan20Hours">Less than 20 hours</option>
+                        <option value="lessThan50Hours">Less than 50 hours</option>
+                    </optgroup>
+                </select>
+
+                <label for="sort">Sort</label>
+                <select name="sort" id="sort">
+                    <option value="played">Played</option>
+                    <option value="unplayed">Unplayed</option>
+                    <option value="completed">Completed</option>
+                    <option value="uncompleted">Uncompleted</option>
+                    <option value="genre">Genre</option>
+                    <option value="timeToBeatShort">TimeLeftToBest(Shortest First)</option>
+                    <option value="timeToBeatLong">TimeLeftToBest(Longest First)</option>
+                </select>
+
+                <table>
+                    <tr>
+
+                    </tr>
+                </table>
+            </div>
+        </main>
+
     </body>
 </html>
