@@ -1082,3 +1082,54 @@ If we are in portrait, drop the header and footer, and arrange things in columns
   }
 }
 ```
+
+## CSS Debugging
+Chrome browser has the insepct mode, and you can see the CSS boxes and see how the padding and aligns are functioning, and turn them on and off at will.
+
+## CSS Frameworks
+Open source packages of commonly used CSS frameworks that can be used and are industry standards
+* Tailwind is a new rising contender that focuses on putting sytles in HTML elements to reduce CSS file sizes.
+
+### Bootstrap
+Bootstrap is the industry lead for CSS frameworks. One downside is how standard it is, so it's difficult to be unique.
+
+### Integrating Bootstrap
+Simply reference the Bootstrap CSS files form the content delivery network (CDN) in a HTML link element.
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    ...
+  </body>
+</html>
+```
+
+If you are using Bootstrap components that require JavaScript, you need to reference the Script module as well
+```html
+<body>
+  ...
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"
+  ></script>
+</body>
+```
+You can also run this command to include it in your source code to not rely on a server
+```
+npm install bootstrap@5.2.3
+```
+  * Make sure to include the most updated version.
+
+
+
