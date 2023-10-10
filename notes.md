@@ -1133,3 +1133,506 @@ npm install bootstrap@5.2.3
 
 
 
+# Javascript
+
+Javascript uses an interpreter at runtime instead of compiling. Very portable but can have many errors.
+
+```console.log();``` Outputs string to console.
+
+## Javascript Console
+
+### Log
+* Basic operation is to output a log message.
+* Allows string formatting
+* Can even specify css declarations to style log output
+  ```js
+  console.log('%c JavaScript Demo', 'font-size:1.5em; color:green;');
+  // OUTPUT: JavaScript Demo //in large green text
+  ```
+
+### Timers
+See how long a piece of code takes to run
+```js
+console.time('demo time');
+// ... some code that takes a long time.
+console.timeEnd('demo time');
+// OUTPUT: demo time: 9762.74 ms
+```
+
+### Count
+See how many times a block of code is called
+```js
+console.count('a');
+// OUTPUT: a: 1
+console.count('a');
+// OUTPUT: a: 2
+console.count('b');
+// OUTPUT: b: 1
+```
+
+## Adding Javascript to HTML
+* Include directly with the ```<script>``` element
+* Or link a javascript file with the src tag on a ```<script>``` element
+  ```html
+    <head>
+      <script src="javascript.js"></script>
+    </head>
+    <body>
+      <button onclick="sayHello()">Say Hello</button>
+      <button onclick="sayGoodbye()">Say Goodbye</button>
+      <script>
+        function sayGoodbye() {
+          alert('Goodbye');
+        }
+      </script>
+    </body>
+  ```
+The onclick attributes automatically create listeners that run the target code when active.
+
+## Types and Constructs
+
+### Variables
+Variables are declared using `let` or `const`. `let` can be changed later, and `const` obviously cannot.
+
+## Primitive Types
+
+| Type        | Meaning                                                    |
+| ----------- | ---------------------------------------------------------- |
+| `Null`      | The type of a variable that has not been assigned a value. |
+| `Undefined` | The type of a variable that has not been defined.          |
+| `Boolean`   | true or false.                                             |
+| `Number`    | A 64 bit signed number.                                    |
+| `BigInt`    | A number of arbitrary magnitude.                           |
+| `String`    | A textual sequence of characters.                          |
+| `Symbol`    | A unique value.                                            |
+
+## Object Types
+
+| Type       | Use                                                                                    | Example                  |
+| ---------- | -------------------------------------------------------------------------------------- | ------------------------ |
+| `Object`   | A collection of properties represented by name value pairs. Values can be of any type. | `{a:3, b:'fish'}`        |
+| `Function` | An object that has the ability to be called.                                           | `function a() {}`        |
+| `Date`     | Calendar dates and times.                                                              | `new Date('1995-12-17')` |
+| `Array`    | An ordered sequence of any type.                                                       | `[3, 'fish']`            |
+| `Map`      | A collection of key value pairs that support efficient lookups.                        | `new Map()`              |
+| `JSON`     | A lightweight data-interchange format used to share information across programs.       | `{"a":3, "b":"fish"}`    |
+
+## Common Operators
+* Numbers
+  * \+ (add)
+  * \- (substract)
+  * \* (Multiply)
+  * / (Divide)
+  * === (Equality)
+* Strings
+  * \+ (Concatenation)
+  * === (Equality)
+
+## Type Conversions
+Javascript is weakly typed. Variables always have a type but can change when it is assigned a new value, or types that can be automatically covernted based upon the context that they are used in.
+
+This can cause confusion with some automatic conversions, so JavaScript has strict equality (`===`) and inequality (`!==`) operators. These skip the type conversion when comparing.
+
+## Conditionals
+ Appropriately named `if`, `else`, `else if` key words (Screw you python)
+
+ ```js
+ if (a === 1) {
+  //...
+} else if (b === 2) {
+  //...
+} else {
+  //...
+}
+ ```
+
+ Also supports the ternary operator
+ ```js
+ a === 1 ? console.log(1) : console.log('not 1');
+ ```
+
+ Also supports boolean operators
+```js
+if (true && (!false || true)) {
+  //...
+}
+```
+
+## Loops
+* For loop
+
+  ```js
+  for (let i = 0; i < 2; i++) {
+  console.log(i);
+  }
+  // OUTPUT: 0 1
+  ```
+
+* do while
+
+  ```js
+  let i = 0;
+  do {
+    console.log(i);
+    i++;
+  } while (i < 2);
+  // OUTPUT: 0 1
+  ```
+
+* while loop
+
+  ```js
+  for (let i = 0; i < 2; i++) {
+  console.log(i);
+  }
+  // OUTPUT: 0 1
+  ```
+
+* for in
+
+  ```js
+  const obj = { a: 1, b: 'fish' };
+  for (const name in obj) {
+    console.log(name);
+  }
+  // OUTPUT: a
+  // OUTPUT: b
+  ```
+
+* for of (Iterates over iterables, so Map and Set friendly)
+  ```js
+  const obj = { a: 1, b: 'fish' };
+  for (const name in obj) {
+    console.log(name);
+  }
+  // OUTPUT: a
+  // OUTPUT: b
+  ```
+
+* Also supports the `break` and `continue` keywords.
+
+## Strings
+Primitive type. can use \` " or ' to mark strings. " and ' are equivalent, \` means a string literal, a string literal contains javascript that is evaluate to format the string.
+  ```js
+  'quoted text'; // " also works
+
+  const l = 'literal';
+  console.log(`string ${l + (1 + 1)} text`);
+  // OUTPUT: string literal2 text
+  ```
+
+Javascript does support Unicode UTF-16 for easier internationalization, though there is a lot of steps to make that a complete process, (Units of measure, keyboard layouts, time, customs)
+
+### Functions
+Several useful functions with strings:
+| Function      | Meaning                                                      |
+| ------------- | ------------------------------------------------------------ |
+| length        | The number of characters in the string                       |
+| indexOf()     | The starting index of a given substring                      |
+| split()       | Split the string into an array on the given delimiter string |
+| startsWith()  | True if the string has a given prefix                        |
+| endsWith()    | True if the string has a given suffix                        |
+| toLowerCase() | Converts all characters to lowercase                         |
+
+```js
+const s = 'Example:조선글';
+
+console.log(s.length);
+// OUTPUT: 11
+console.log(s.indexOf('조선글'));
+// OUTPUT: 8
+console.log(s.split(':'));
+// OUTPUT: ['Example', '조선글']
+console.log(s.startsWith('Ex'));
+// OUTPUT: true
+console.log(s.endsWith('조선글'));
+// OUTPUT: true
+console.log(s.toLowerCase());
+// OUTPUT: example:조선글
+```
+
+## Functions
+In Javascript Functions are first class objects. They be assigned a name, passed as a parameter, returned as a result, and referenced from an object or array just like a variable.
+
+Requires the `function` keyword. No type declarations. Does not require a return keyword, can be "void"
+
+```js
+function hello(who) {
+  return 'hello ' + who;
+}
+
+console.log(hello('world'));
+// OUTPUT: hello world
+```
+No return:
+```js
+function hello(who) {
+  who.count++;
+  console.log('hello ' + who.name);
+}
+
+hello({ name: 'world', count: 0 });
+// OUTPUT: hello world
+```
+
+### Function Parameters
+When a function is called, not all parameters be specified. If this is the case, then the extra parameter's value is `undefined`
+
+Parameters can also have a default value that is specified.
+```js
+function labeler(value, title = 'title') {
+  console.log(`${title}=${value}`);
+}
+
+labeler();
+// OUTPUT: title=undefined
+
+labeler('fish');
+// OUTPUT: title=fish
+
+labeler('fish', 'animal');
+// OUTPUT: animal=fish
+```
+
+### Anonymous Functions
+Javascript functions can be anonymous and assigned to a variable or passed in as a parameter
+```js
+// Function that takes a function as a parameter
+function doMath(operation, a, b) {
+  return operation(a, b);
+}
+
+// Anonymous function assigned to a variable
+const add = function (a, b) {
+  return a + b;
+};
+
+console.log(doMath(add, 5, 3));
+// OUTPUT: 8
+
+// Anonymous function assigned to a parameter
+console.log(
+  doMath(
+    function (a, b) {
+      return a - b;
+    },
+    5,
+    3
+  )
+);
+// OUTPUT: 2
+```
+
+Some more examples of functions being passed in as operators and assigned to variables
+```js
+// Anonymous declaration of the function that is later assigned to a variable
+const add = function (a, b) {
+  return a + b;
+};
+
+// Function that logs as a side effect of its execution
+function labeler(label, value) {
+  console.log(label + '=' + value);
+}
+
+// Function that takes a function as a parameter and then executes the function as a side effect
+function addAndLabel(labeler, label, adder, a, b) {
+  labeler(label, adder(a, b));
+}
+
+// Passing a function to a function
+addAndLabel(labeler, 'a+b', add, 1, 3);
+// OUTPUT: a+b=4
+
+// Function that returns a function
+function labelMaker(label) {
+  return function (value) {
+    console.log(label + '=' + value);
+  };
+}
+
+// Assign a function from the return value of the function
+const nameLabeler = labelMaker('name');
+
+// Calling the returned function
+nameLabeler('value');
+// OUTPUT: name=value
+```
+
+### Inner Functions
+Functions can also be defined inside other functions. This allows modularlization without exposing your functions
+```js
+function labeler(value) {
+  function stringLabeler(value) {
+    console.log('string=' + value);
+  }
+  function numberLabeler(value) {
+    console.log('number=' + value);
+  }
+
+  if (typeof value == 'string') {
+    stringLabeler(value);
+  } else if (typeof value == 'number') {
+    numberLabeler(value);
+  }
+}
+
+labeler(5);
+// OUTPUT: number=5
+
+labeler('fish');
+// OUTPUT: string=fish
+```
+
+## JavaScript Arrow Function
+An inline function declaration that allows compactness.
+
+A function that always returns 3 and takes no parameters.
+```js
+() => 3;
+```
+Two equivalent sort functions.
+
+```js
+const a = [1, 2, 3, 4];
+
+// standard function syntax
+a.sort(function (v1, v2) {
+  return v1 - v2;
+});
+
+// arrow function syntax
+a.sort((v1, v2) => v1 - v2);
+```
+
+### Return Values
+Arrow Functions have special values for return keywords. The return keyword is optional if no curly braces are provided and contains only a single expression. If curly braces are present, it is required, and other functions (hehe) like a standard function.
+```js
+() => 3;
+// RETURNS: 3
+
+() => {
+  3;
+};
+// RETURNS: undefined
+
+() => {
+  return 3;
+};
+// RETURNS: 3
+```
+
+### This Pointer
+Arrow functions inherit the `this` pointer from the scope of where it is created. This is known as a `closure`. Essentially the function will remember its scope when it was created even after it has passed out of scope.
+
+Consider the following example:
+
+```js
+function makeClosure(a) {
+  a = 'a2';
+  const b = 'b2';
+  return () => [a, b];
+}
+```
+  * A closure is created with the arrow function, and the original values of a and b
+```js
+const a = 'a';
+const b = 'b';
+
+const closure = makeClosure(a);
+```
+  * New values of a and b are assigned
+```js
+console.log(closure());
+// OUTPUT: ['a2', 'b2']
+
+console.log(a, b);
+// OUTPUT: 'a' 'b'
+```
+  * The original values of a and b are retained when the function is run again
+
+This is useful when executing JavaScript within the scope of an HTML page and remember what they were when the function was created instead of when they are executed.
+
+### Debouncer
+A debounce function is a function that is only executed within a given time window. Helps limit expensive requests occuring thousands of times per second.
+
+## JavaScript Array
+Array represents a sequence of objects and other primitives. Works on a zero based index.
+
+### Arrary Functions
+| Function | Meaning                                                   | Example                       |
+| -------- | --------------------------------------------------------- | ----------------------------- |
+| push     | Add an item to the end of the array                       | `a.push(4)`                   |
+| pop      | Remove an item from the end of the array                  | `x = a.pop()`                 |
+| slice    | Return a sub-array                                        | `a.slice(1,-1)`               |
+| sort     | Run a function to sort an array in place                  | `a.sort((a,b) => b-a)`        |
+| values   | Creates an iterator for use with a `for of` loop          | `for (i of a.values()) {...}` |
+| find     | Find the first item satisfied by a test function          | `a.find(i => i < 2)`          |
+| forEach  | Run a function on each array item                         | `a.forEach(console.log)`      |
+| reduce   | Run a function to reduce each array item to a single item | `a.reduce((a, c) => a + c)`   |
+| map      | Run a function to map an array to a new array             | `a.map(i => i+i)`             |
+| filter   | Run a function to remove items                            | `a.filter(i => i%2)`          |
+| every    | Run a function to test if all items match                 | `a.every(i => i < 3)`         |
+| some     | Run a function to test if any items match                 | `a.some(i => 1 < 1)`          |
+
+```js
+const a = [1, 2, 3];
+
+console.log(a.map((i) => i + i));
+// OUTPUT: [2,4,6]
+console.log(a.reduce((v1, v2) => v1 + v2));
+// OUTPUT: 6
+console.log(a.sort((v1, v2) => v2 - v1));
+// OUTPUT: [3,2,1]
+
+a.push(4);
+console.log(a.length);
+// OUTPUT: 4
+```
+
+## JSON
+JavaScript Object Notation (JSON). A string notation that easily converts to and from objects.
+
+A JSON document contains one of the following: 
+| Type    | Example                 |
+| ------- | ----------------------- |
+| string  | "crockford"             |
+| number  | 42                      |
+| boolean | true                    |
+| array   | [null,42,"crockford"]   |
+| object  | {"a":1,"b":"crockford"} |
+| null    | null                    |
+
+However it is usualy an Object
+
+<hr>
+
+An object contains zero or more key value paris. The key is always a string, and the value must be one of the valid JSON data types. Key value pairs are delimited with commas, and curly braces delimit an object. Square brackets and commas delimit arrays, and strings are always delimited with double quotes "".
+
+```json
+{
+  "class": {
+    "title": "web programming",
+    "description": "Amazing"
+  },
+  "enrollment": ["Marco", "Jana", "فَاطِمَة"],
+  "start": "2025-02-01",
+  "end": null
+}
+```
+  * JSON is always encoded with UTF-8
+
+  ### Converting to JavaScript
+  You can convert JSON to and from JavaScript using `JSON.parse` and `JSON.stringify` functions.
+  ```js
+  const obj = { a: 2, b: 'crockford', c: undefined };
+const json = JSON.stringify(obj);
+const objFromJson = JSON.parse(json);
+
+console.log(obj, json, objFromJson);
+
+// OUTPUT:
+// {a: 2, b: 'crockford', c: undefined}
+// {"a":2, "b":"crockford"}
+// {a: 2, b: 'crockford'}
+  ```
