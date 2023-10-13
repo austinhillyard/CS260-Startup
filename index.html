@@ -24,22 +24,31 @@
             <p>Login or create an account</p>
             <form method="get" action = "tracker.html">
                 <!--Login and Create Account placeholder form for users.-->
-                <label for="username">Username:</label>
-                <input type="text" id="username" placeholder="Enter Username" />
-                <label for="password">Password:</label>
-                <input type="password" id="password" placeholder="Enter Password" />
+                <section class="fields">
+                    <div class="username">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" placeholder="Enter Username" />
+                    </div>
+                    <div class="pass">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" placeholder="Enter Password" />
+                    </div>
+                </section>
                 <!-- Login Option-->
-                <button id="loginButton" type="submit">Login</button>
-                <!-- Create Account Option-->
-                <button id="createAccountButton" type="submit">Create Account</button>
+                <section class="buttons">
+                    <button id="loginButton" type="submit">Login</button>
+                    <!-- Create Account Option-->
+                    <button id="createAccountButton" type="submit">Create Account</button>
+                </section>
             </form>
             
         </main>
 
+        <footer>
+            <hr/>
+            <p>Author: Austin Hillyard</p>
+            <a href="https://github.com/austinhillyard/CS260-Startup/tree/main"><p>GitHub</p></a>
+        </footer>
     </body>
-    <footer>
-        <hr/>
-        <p>Author: Austin Hillyard</p>
-        <a href="https://github.com/austinhillyard/CS260-Startup/tree/main">GitHub</a>
-    </footer>
+    
 </html>
