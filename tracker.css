@@ -127,6 +127,14 @@ main div {
     width: 100px;
 }
 
+hr {
+    width: 100%;
+}
+
+hr.bottom {
+    border: rgb(77, 97, 118);
+}
+
 
 .Backlog {
     flex: 1;
@@ -137,14 +145,14 @@ footer {
 }
 
 @media (max-height: 600px) {
-    header {
-      display: none;
-    }
     footer {
       display: none;
     }
     main {
       flex: 1 100vh;
       flex-direction: column;
+    }
+    .gameTimeView {
+        grid-template-columns: repeat(2, minmax(100px, 1fr));
     }
   }
