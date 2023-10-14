@@ -76,3 +76,9 @@ This deliverable includes the basic HTML structure of the website.
 * **Images** The import tool has two picturs representing the specific settings and location to find the profile info needed to make the import tool work
 * **Database** Database info is represented by several tables on the tracker page. I am sure these will be modified in the future once I figure out how to best represent the data. For now they are merely placeholders.
 * **Websocket and Service Calls** How exactly websocket will work I am not sure. For now I am anticipating using Steam's and HowLongToBeat's API to populate data for my database, and this data can be updated via the refresh button is the plan
+
+# CSS Deliverable
+This deliverable includes the basic CSS of the website.
+* **Color** - Background color and buttons and fields and text have been appropriately colored to be more sleek styled.
+* **Formatting** - All of the elements have relational and dynamic formatting. Most of this has been achieved with a flex bin. The game views in the tracker page are down with a grid. The tiles are place holders for now. Eventually they will have functionality. Along with formatting was separating the areas of the website with background color, and in the game view horiztonal rules to help separate each of the grid boxes.
+* **CSS and not bootstrap** Although bootstrap does look cool, for now I wished to style my website in CSS as a practice to get familiar with CSS and its rules and how it works. This was definitely achieved and took a lot of learning and trial and error on my part. Perhaps later down the line I will insert some bootstrap elements, likely a more sleek navbar.
