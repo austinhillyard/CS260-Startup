@@ -1635,4 +1635,307 @@ console.log(obj, json, objFromJson);
 // {a: 2, b: 'crockford', c: undefined}
 // {"a":2, "b":"crockford"}
 // {a: 2, b: 'crockford'}
-  ```
+```
+
+## Regular Expressions
+
+Regular expressions are supported by default and can be used by either the object or a string literal
+```js
+const objRegex = new RegExp('ab*', 'i');
+const literalRegex = /ab*/i;
+```
+
+The string class also supports some regular expression functions.
+* match
+* replace
+* search
+* split
+
+Regexes also have a Boolean test function
+
+```js
+const petRegex = /(dog)|(cat)|(bird)/gim;
+const text = 'Both cats and dogs are pets, but not rocks.';
+
+text.match(petRegex);
+// RETURNS: ['cat', 'dog']
+
+text.replace(petRegex, 'animal');
+// RETURNS: Both animals and animals are pets, but not rocks.
+
+petRegex.test(text);
+// RETURNS: true
+```
+
+## Rest and Spread 
+
+### Rest
+
+Think of Rest has a parameter that can take an unspecified number of parameters. It has to be the last parameter. use the `...` to specify a rest parameter
+
+```js
+function hasNumber(test, ...numbers) {
+  return numbers.some((i) => i === test);
+}
+
+hasNumber(2, 1, 2, 3);
+// RETURNS: true
+```
+
+In a sense it is contracting the parameters into an array of dynamic type so you don't have to specify an array.
+
+### Spread
+
+Does the opposite of an array. It expands an array (or any iterable) into the parameters of a function
+
+```js
+function person(firstName, lastName) {
+  return { first: firstName, last: lastName };
+}
+
+const p = person(...['Ryan', 'Dahl']);
+console.log(p);
+// OUTPUT: {first: 'Ryan', last: 'Dahl'}
+```
+
+## Exceptions
+
+Exceptions in Java use the ```try catch throw``` syntax. Exceptions can be triggered using the throw key word. Works like most exception handlers. Skips the rest of the code and goes to the catch block.
+
+You can also use the ```finally``` keyword to specify code that is always ran.
+
+```js
+function connectDatabase() {
+  throw new Error('connection error');
+}
+
+try {
+  connectDatabase();
+  console.log('never executed');
+} catch (err) {
+  console.log(err);
+} finally {
+  console.log('always executed');
+}
+
+// OUTPUT: Error: connection error
+//         always executed
+```
+
+* Try to only throw exceptions for truly exceptional cases. This will make your code easier to debug.
+
+### Fallbacks
+
+Implementing fall back code in a catch block in case the try block fails. For example, not being able to connect to a return, and so you fallback on the local cache data.
+
+```js
+function getScores() {
+  try {
+    const scores = scoringService.getScores();
+    // store the scores so that we can use them later if the network is not available
+    window.localStorage.setItem('scores', scores);
+    return scores;
+  } catch {
+    return window.localStorage.getItem('scores');
+  }
+}
+```
+
+## Destructuring
+* *Not Destructing
+
+The process of pulling individual items out of an existing one, or removing structure. Done with arrays or objects
+
+```js
+const a = [1, 2, 4, 5];
+
+// destructure the first two items from a, into the new variables b and c
+const [b, c] = a;
+
+console.log(b, c);
+// OUTPUT: 1, 2
+```
+* Does not create an array, simply specifies items to remove
+
+Can also use rest syntax
+
+```js
+const [b, c, ...others] = a;
+
+console.log(b, c, others);
+// OUTPUT: 1, 2, [4,5]
+```
+
+Also works on objects, but you must specify the exact values you was to destructure, it does not assume location
+
+```js
+const o = { a: 1, b: 'animals', c: ['fish', 'cats'] };
+
+const { a, c } = o;
+
+console.log(a, c);
+// OUTPUT 1, ['fish', 'cats']
+```
+
+You can also specify new names as you destructure.
+```js
+const o = { a: 1, b: 'animals', c: ['fish', 'cats'] };
+
+const { a: count, b: type } = o;
+
+console.log(count, type);
+// OUTPUT 1, animals
+```
+
+You can also provide default values if they are not provided
+```js
+const { a, b = 22 } = {};
+const [c = 44] = [];
+
+console.log(a, b, c);
+// OUTPUT: undefined, 22, 44
+```
+
+## JavaScript Classes and Objects
+
+### Objects
+
+Objects in Java script represent a collection of `name:value` pairs where `name` must be a string or symbol, but value can anything, even another object.
+
+Objects have common functionality such as constructors, the `this` pointer, static properties and functions, and inheritance.
+
+Objects are created with the `new` operator, and you can specify properties by referencing property name, and you can reference them later with the brackets or . notation
+
+```js
+const obj = new Object({a:3});
+obj['b'] = 'fish';
+obj.c = [1, 2, 3];
+obj.hello = function () {
+  console.log('hello');
+};
+
+console.log(obj);
+// OUTPUT: {a: 3, b: 'fish', c: [1,2,3], hello: func}
+```
+
+You can also use the object-literal notation.
+```js
+const obj = {
+  a: 3,
+  b: 'fish',
+};
+```
+
+### Object Functions
+
+Objects have a couple static functions.
+
+| Function | Meaning                             |
+| -------- | ----------------------------------- |
+| entries  | Returns an array of key value pairs |
+| keys     | Returns an array of keys            |
+| values   | Returns an array of values          |
+
+```js
+const obj = {
+  a: 3,
+  b: 'fish',
+};
+
+console.log(Object.entries(obj));
+// OUTPUT: [['a', 3], ['b', 'fish']]
+console.log(Object.keys(obj));
+// OUTPUT: ['a', 'b']
+console.log(Object.values(obj));
+// OUTPUT: [3, 'fish']
+```
+
+### Constructor
+
+Any function that returns an object is a constructor, and is invoked with the `new` operator. You can specify any values and methods you want in a constructor.
+
+```js
+function Person(name) {
+  return {
+    name: name,
+    log: function () {
+      console.log('My name is ' + this.name);
+    },
+  };
+}
+
+const p = new Person('Eich');
+p.log();
+// OUTPUT: My name is Eich
+```
+
+### This Pointer
+Relies on the scope to determine which object it is pointing to.
+
+### Classes
+
+Classes are used to define objects. They are used as a reusable component rather than a one-off object. Look similar to an object but have an explicit constructor.
+
+```js
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+
+  log() {
+    console.log('My name is ' + this.name);
+  }
+}
+
+const p = new Person('Eich');
+p.log();
+// OUTPUT: My name is Eich
+```
+
+You can make properties and functions of classes private with `#`.
+
+```js
+class Person {
+  #name;
+
+  constructor(name) {
+    this.#name = name;
+  }
+}
+
+const p = new Person('Eich');
+p.#name = 'Lie';
+// OUTPUT: Uncaught SyntaxError: Private field '#name' must be declared in an enclosing class
+```
+
+### Inheritance
+
+Classes can be extended using the `extended` keyword (Go figure). Parameters that need to be passed to the parent class are done using the super function.
+
+```js
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+
+  print() {
+    return 'My name is ' + this.name;
+  }
+}
+
+class Employee extends Person {
+  constructor(name, position) {
+    super(name);
+    this.position = position;
+  }
+
+  print() {
+    return super.print() + '. I am a ' + this.position;
+  }
+}
+
+const e = new Employee('Eich', 'programmer');
+console.log(e.print());
+// OUTPUT: My name is Eich. I am a programmer
+```
+
