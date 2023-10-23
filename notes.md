@@ -2057,3 +2057,113 @@ If you want to use a module in a global scope, you have to either attach an even
 ### Modules in Web Frameworks
 
 Discussed more later, but the bundler in a framework will inject your code for you and hand the module and global scope for you.
+
+
+## JavaScript Document Object Model
+
+The object representation of the HTML elements that the browser uses to render the display. This allows you to dynamically manipulate the HTML with JavaScript.
+
+You can access the elements of the HTML.
+```js
+Referenced through the global variable `document`.
+
+function displayElement(el) {
+  console.log(el.tagName);
+  for (const child of el.children) {
+    displayElement(child);
+  }
+}
+
+displayElement(document);
+```
+
+You can also use a CSS selector to query elements
+```js
+const listElements = document.querySelectorAll('p');
+for (const el of listElements) {
+  console.log(el.textContent);
+}
+```
+
+### Modifying the DOM
+
+You can insert, modify, or delete the elements in the DOM. First Create the element on the DOM document. You then insert the new element into the DOM tree by appending it to an existing element in the tree.
+
+```js
+function insertChild(parentSelector, text) {
+  const newChild = document.createElement('div');
+  newChild.textContent = text;
+
+  const parentElement = document.querySelector(parentSelector);
+  parentElement.appendChild(newChild);
+}
+
+insertChild('#courses', 'new course');
+```
+
+You can also delete elements.
+
+```js
+function deleteElement(elementSelector) {
+  const el = document.querySelector(elementSelector);
+  el.parentElement.removeChild(el);
+}
+
+deleteElement('#courses div');
+```
+
+### Injecting HTML
+
+You can also inject entire blocks of HTML into an element. However this is a common attack of hackers to inject JS and make request for sensitive info.
+
+```js
+const el = document.querySelector('div');
+el.innerHTML = '<div class="injected"><b>Hello</b>!</div>';
+```
+
+"If you are injecting HTML, make sure that it cannot be manipulated by a user. Common injection paths include HTML input controls, URL parameters, and HTTP headers. Either sanitize any HTML that contains variables, or simply use DOM manipulation functions instead of using `innerHTML`." (https://github.com/webprogramming260/.github/blob/main/profile/javascript/dom/dom.md)
+
+### Event Listeners
+
+All DOM elements support attaching a function that gets called when an event occurs on an element.
+
+```js
+const submitDataEl = document.querySelector('#submitData');
+submitDataEl.addEventListener('click', function (event) {
+  console.log(event.type);
+});
+```
+
+Some of the categories of Events
+| Event Category | Description           |
+| -------------- | --------------------- |
+| Clipboard      | Cut, copied, pasted   |
+| Focus          | An element gets focus |
+| Keyboard       | Keys are pressed      |
+| Mouse          | Click events          |
+| Text selection | When text is selected |
+
+You can also add event listeners directly in the HTML
+
+```js
+<button onclick='alert("clicked")'>click me</button>
+```
+
+## Local Storage
+
+Local storage API can be used to store and retrieve data between sessions, page renderings, and cache data in case the server does not respond.
+
+### Using Local Storage
+
+Four main functions:
+
+| Function             | Meaning                                      |
+| -------------------- | -------------------------------------------- |
+| setItem(name, value) | Sets a named item's value into local storage |
+| getItem(name)        | Gets a named item's value from local storage |
+| removeItem(name)     | Removes a named item from local storage      |
+| clear()              | Clears all items in local storage            |
+
+Must be of type `string`, `number`, or `boolean`. If you want to store an object or an array, need to convert it to a JSON string first. `JSON.stringify()` and then `JSON.parse`
+
+Under the Application tab in dev tools, and then under Local Storage, you can see local storage values.
