@@ -2167,3 +2167,197 @@ Four main functions:
 Must be of type `string`, `number`, or `boolean`. If you want to store an object or an array, need to convert it to a JSON string first. `JSON.stringify()` and then `JSON.parse`
 
 Under the Application tab in dev tools, and then under Local Storage, you can see local storage values.
+
+## JavaScript Promises
+
+JavaScript is a single threaded application. You only ever have one piece of code executing at a time. But you can run code in parallel with JavaScript Promises.
+
+Three states of a Promise
+
+1. pending - Currently running asynchonously.
+1. fulfilled - Completed Successfully.
+1. rejected - Failed to complete.
+
+You create a promise by calling the promise object constructor and passing in an executor function that runs the operation.
+
+```js
+const delay = (msg, wait) => {
+  setTimeout(() => {
+    console.log(msg, wait);
+  }, 1000 * wait);
+};
+
+new Promise((resolve, reject) => {
+  // Code executing in the promise
+  for (let i = 0; i < 3; i++) {
+    delay('In promise', i);
+  }
+});
+
+// Code executing after the promise
+for (let i = 0; i < 3; i++) {
+  delay('After promise', i);
+}
+
+// OUTPUT:
+//   In promise 0
+//   After promise 0
+//   In promise 1
+//   After promise 1
+//   In promise 2
+//   After promise 2
+```
+
+### Resolving and Rejecting
+
+You can call resolve and reject to set the status of the promise
+
+```js
+const coinToss = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (Math.random() > 0.5) {
+      resolve('success');
+    } else {
+      reject('error');
+    }
+  }, 10000);
+});
+```
+
+### Then, catch, finally
+
+Similar to error catching.
+* `then` is used if the promise is fulfilled
+* `catch` is used if the promise is rejected
+* `finally` is always called
+
+```js
+coinToss
+  .then((result) => console.log(`Coin toss result: ${result}`))
+  .catch((err) => console.log(`Error: ${err}`))
+  .finally(() => console.log('Toss completed'));
+
+// OUTPUT:
+//    Coin toss result: tails
+//    Toss completed
+```
+The options are chained to the promise object.
+
+### Observer Pattern
+THe observer program is another way of asynchronous processing in Javascript. The observer is a pipeline
+
+## JavaScript Async/Await
+
+A more concise asynchronous execution than the `then` `catch` version.
+
+`then` `catch` version.
+```js
+coinToss()
+  .then((result) => console.log(`Toss result ${result}`))
+  .catch((err) => console.error(`Error: ${err}`))
+  .finally(() => console.log(`Toss completed`));
+```
+`await` try catch version.
+```js
+try {
+  const result = await coinToss();
+  console.log(`Toss result ${result}`);
+} catch (err) {
+  console.error(`Error: ${err}`);
+} finally {
+  console.log(`Toss completed`);
+}
+```
+The await keyword block is blocked until the promise is fulfilled.
+
+Also use the try catch block for a more complex asynchronous process with multiple promises and a failure state:
+
+```js
+async function pickupPizza() {
+  const order = createOrder();
+
+  // Promise
+  try {
+    await placeOrder(order);
+    serveOrder(order);
+  } 
+  catch (order) {
+    orderFailure(order);
+  }
+    
+}
+```
+* The function is asynchronous, and calls a promis placeOrder and awaits its completion before calling serveOrder. If the promise fails, instead execute orderFailure
+
+### Async
+
+Await can only be used with a function defined with the `async` keyword or at the top level of the JavaScript. Async transforms the function so it will return a promise, aka, an asynchronous function.
+
+```js
+function cow() {
+  return 'moo';
+}
+console.log(cow());
+// OUTPUT: moo
+```
+
+If we designate the function to be asynchronous then the return value becomes a promise that is immediately resolved and has a value that is the return value of the function.
+
+```js
+async function cow() {
+  return 'moo';
+}
+console.log(cow());
+// OUTPUT: Promise {<fulfilled>: 'moo'}
+```
+
+We then change the cow function to explicitly create a promise instead of the automatically generated promise that the await keyword generates.
+
+```js
+async function cow() {
+  return new Promise((resolve) => {
+    resolve('moo');
+  });
+}
+console.log(cow());
+// OUTPUT: Promise {<pending>}
+```
+
+You can see that the promise is in the pending state because the promise's execution function has not yet resolved.
+
+### Await
+The `await` keyword wraps a call to the async function, blocks execution until the promise has resolved, and then returns the result of the promise.
+
+```js
+console.log(cow());
+// OUTPUT: Promise {<pending>}
+
+console.log(await cow());
+// OUTPUT: moo
+```
+In the first example, it returns the still ongoing promise, but the second example waits until it is done and then executes.
+
+### Comparison
+
+Here we use the original then syntax, which is a bit confusing.
+```js
+const httpPromise = fetch('https://simon.cs260.click/api/user/me');
+const jsonPromise = httpPromise.then((r) => r.json());
+jsonPromise.then((j) => console.log(j));
+console.log('done');
+
+// OUTPUT: done
+// OUTPUT: {email: 'bud@mail.com', authenticated: true}
+```
+
+Here it is clear that the two functions are promises and we wait until they are done before executing the code below.
+
+```js
+const httpResponse = await fetch('https://simon.cs260.click/api/user/me');
+const jsonResponse = await httpResponse.json();
+console.log(jsonResponse));
+console.log('done');
+
+// OUTPUT: {email: 'bud@mail.com', authenticated: true}
+// OUTPUT: done
+```
