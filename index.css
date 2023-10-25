@@ -79,8 +79,15 @@ button {
     border-radius: .5em;
 }
 
+button:hover {
+    background-color: lightgray;
+}
+
 #loginButton {
-    background-color: darkslateblue;
+    background-color: #483d8b;
+}
+#loginButton:hover {
+    background-color: #5e549d;
 }
 
 footer {

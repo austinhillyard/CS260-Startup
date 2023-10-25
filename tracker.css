@@ -85,6 +85,10 @@ button {
     border-radius: .5em;
 }
 
+button:hover {
+    background-color: #5e549d;
+}
+
 main div {
     margin: .5em;
     background-color: #17202A;

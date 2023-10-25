@@ -48,3 +48,7 @@ button {
     text-align: center;
     border-radius: .5em;
 }
+
+button:hover {
+    background-color: #5e549d;
+}

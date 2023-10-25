@@ -2361,3 +2361,10 @@ console.log('done');
 // OUTPUT: {email: 'bud@mail.com', authenticated: true}
 // OUTPUT: done
 ```
+
+## Debugging JavaScript
+
+Console Debugging is one way to debug and also log status of your code. Simple place console.log statements wherever you feel they are needed to ensure your code is working.
+
+### Browser debugging
+In the source tab on the broswer dev tools, you can look at the JavaScript file and set break points and debug that way too.
