@@ -123,12 +123,17 @@ main div {
 
 .game {
     border-radius: 5px;
-    color: aqua;
-    background-color: firebrick;
+    background-color: rgb(76, 86, 97);
     border: thick white;
     margin: 0.5em;
     height: 150px;
     width: 100px;
+}
+
+.game * {
+    color: white;
+    text-wrap: normal;
+    font-size: small;
 }
 
 hr {
