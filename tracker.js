@@ -26,6 +26,11 @@ const oneYearGames = [];
 const moreThanYearGames = [];
 const neverPlayed = [];
 
+//Values holding the current filter and sort
+let filters = ["no-filter"];
+let sorting = "playtimeDown";
+let separateGameView = true;
+
 //Class object that games are converted to from JSON string.
 class Game {
     constructor(gameJson) {
@@ -46,12 +51,28 @@ class Game {
             return "Never Played";
         }
     }
+
+    getTimePlayed() {
+        return "Time Played: " + Math.floor(this.playtime / 60) + "hr " + this.playtime % 60 + "min";
+    }
+
+    getLastPlayed() {
+        if (this.lastPlayed === "Never Played") {
+            return this.lastPlayed;
+        }
+        else {
+            return "Last Played: " + this.lastPlayed.toDateString();
+        }
+    }
 }
 
 //Loads the page with games, or a message saying to use the import tool.
 window.onload = function() {
     const gamesString = localStorage.getItem("games");
     if (gamesString != null) {
+        filterListener();
+        sortListener();
+        checkListener();
         loadGames(gamesString);
     }
 
@@ -110,26 +131,20 @@ function putGamesInTimeSlots(games) {
 }
 
 function insertGames() {
-    for (let game of oneWeekGames) {
-        insertGameCard(game, "lessThanWeek");
-    }
-    for (let game of oneMonthGames) {
-        insertGameCard(game, "lessThan1Month");
-    }
-    for (let game of threeMonthGames) {
-        insertGameCard(game, "lessThan3Months");
-    }
-    for (let game of sixMonthGames) {
-        insertGameCard(game, "lessThan6Months");
-    }
-    for (let game of oneYearGames) {
-        insertGameCard(game, "lessThanYear");
-    }
-    for (let game of moreThanYearGames) {
-        insertGameCard(game, "moreThanYear");
-    }
-    for (let game of neverPlayed) {
-        insertGameCard(game, "neverPlayed");
+    
+    insertGameList(oneWeekGames, "lessThanWeek");
+    insertGameList(oneMonthGames, "lessThan1Month");
+    insertGameList(threeMonthGames, "lessThan3Months");
+    insertGameList(sixMonthGames, "lessThan6Months");
+    insertGameList(oneYearGames, "lessThanYear");
+    insertGameList(moreThanYearGames, "moreThanYear");
+    insertGameList(neverPlayed, "neverPlayed");
+    
+}
+
+function insertGameList(gameList, id) {
+    for (let game of gameList) {
+        insertGameCard(game, id);
     }
 }
 
@@ -142,13 +157,8 @@ function insertGameCard(game, section) {
     let gameLastPlayed = document.createElement("p");
 
     gameName.innerHTML = game.name;
-    gameTime.innerHTML = "Time Played: " + Math.floor(game.playtime / 60) + "hr " + game.playtime % 60 + "min";
-    if (game.lastPlayed === "Never Played") {
-        gameLastPlayed.innerHTML = "Never Played";
-    }
-    else {
-        gameLastPlayed.innerHTML = "Last Played: " + game.lastPlayed.toDateString();
-    }
+    gameTime.innerHTML = game.getTimePlayed();
+    gameLastPlayed.innerHTML = game.getLastPlayed()
 
     gameCard.classList.add("game")
     gameCard.appendChild(gameName);
@@ -165,7 +175,85 @@ function steamGridImage(gameID) {
 
 }
 
+//Filter function listener
+
+function filterListener() {
+    const filterElement = document.getElementById("filter");
+    filterElement.addEventListener("input", function() {
+        
+        //Get Selected values
+        const selections = getFilterValues(filterElement);
+        filters = selections;
+        console.log(selections);
+        applyView();
+
+    });
+}
+
+//Returns all the selected values of the filter.
+function getFilterValues(filterElement) {
+    let selections = [];
+    let options = filterElement && filterElement.options;
+    let opt;
+
+    for (let i = 0, iLen=options.length; i < iLen; i++) {
+        opt = options[i];
+
+        if (opt.selected) {
+            selections.push(opt.value || opt.text);
+        }
+    }
+
+    return selections;
+}
+
+//Sort function listener
+
+function sortListener() {
+    const sortElement = document.getElementById("sort");
+    sortElement.addEventListener("change", function () {
+        const selectionOption = sortElement.options[sortElement.selectedIndex];
+        const selectionValue = selectionOption.value;
+        sorting = selectionValue;
+        console.log("Selected sort option: " + selectionValue);
+        applyView();
+    });
+}
+
+function checkListener() {
+    const checkElement = document.getElementById("gameViewCheck");
+    checkElement.addEventListener("change", function() {
+        separateGameView = checkElement.checked;
+        console.log(separateGameView);
+        applyView();
+    });
+}
+
+//Function that rebuilds the view to any current filters and sort
+async function applyView(newFilters=filters, newSorting=sorting, gameViewOn=separateGameView) {
+    clearDisplay();
+    if (gameViewOn) {
+
+    }
+    else {
+        const gameView = document.getElementById("GameView");
+        const gameTimeView = document.createElement("div");
+        gameTimeView.classList.add("gameTimeView");
+        gameTimeView.id = "allGameView";
+        gameView.appendChild(gameTimeView);
+
+        //Change this line later
+        insertGameList(games, "allGameView");
+    }
+    
+
+}
+
+function clearDisplay() {
+    document.getElementById("GameView").replaceChildren();
+}
+
 //Refresh button that reruns the import functionality
 function refreshData() {
-
+    //Will get this working when I get the API on the backend handled.
 }

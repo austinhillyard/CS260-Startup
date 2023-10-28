@@ -50,18 +50,6 @@
                                     <option value="completed">Completed</option>
                                     <option value="uncompleted">Uncompleted</option>
                                 </optgroup>
-                                <optgroup label="Genre">
-                                    <option value="action">Action</option>
-                                    <option value="adventure">Adventure</option>
-                                    <option value="casual">Casual</option>
-                                    <option value="indie">Indie</option>
-                                    <option value="mmo">Massively Multiplayer</option>
-                                    <option value="racing">Racing</option>
-                                    <option value="rpg">RPG</option>
-                                    <option value="simulation">Simulation</option>
-                                    <option value="sports">Sports</option>
-                                    <option value="strategy">Strategy</option>
-                                </optgroup>
                                 <optgroup label="Time Left to Beat">
                                     <option value="lessThan5Hours">Less than 5 hours</option>
                                     <option value="lessThan10Hours">Less than 10 hours</option>
@@ -75,14 +63,20 @@
                         <!--Sort option for games. Only one can be selected at a time-->
                         <label for="sort">Sort</label>
                         <select name="sort" id="sort">
+                            <option value="playtimeDown">Playtime(Longest First)</option>
+                            <option value="playtimeUp">Playtime(Shortest First)</option>
                             <option value="played">Played</option>
                             <option value="unplayed">Unplayed</option>
                             <option value="completed">Completed</option>
                             <option value="uncompleted">Uncompleted</option>
-                            <option value="genre">Genre</option>
                             <option value="timeToBeatShort">TimeLeftToBest(Shortest First)</option>
                             <option value="timeToBeatLong">TimeLeftToBest(Longest First)</option>
                         </select>
+                    </div>
+                    
+                    <div class="CheckBox">
+                        <label for="gameViewCheck">Separate Game View</label>
+                        <input type="checkbox" id="gameViewCheck" value="on" checked>
                     </div>
 
                     <!--Refresh button that pulls playtimes and new games from the same architecture as the Steam import tool.-->

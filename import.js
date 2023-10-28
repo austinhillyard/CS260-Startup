@@ -21,6 +21,7 @@ function getSteamID() {
         console.log("Data Received");
         //getOwnedGames(id);
         saveGameData(austinGames);
+        alert("Import Successful!");
     }
     else {
         alert("Invalid Steam URL. Try again.");
