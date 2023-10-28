@@ -13,5 +13,5 @@ function authenticationToken() {
     const username = document.querySelector("#username");
     const password = document.querySelector("#password");
     const token = { username:username.value, password:password.value };
-    return token.toString();
+    return JSON.stringify(token);
 }
