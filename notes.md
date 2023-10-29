@@ -2368,3 +2368,12 @@ Console Debugging is one way to debug and also log status of your code. Simple p
 
 ### Browser debugging
 In the source tab on the broswer dev tools, you can look at the JavaScript file and set break points and debug that way too.
+
+# Midterm Review
+1. \# is an id selector, and . is a class selector
+1. Padding is the distance from the edge of the background to the text. Margin is external whitespace from the background to other elements
+1. Arrow function is an inline function syntax
+1. Map function maps an array to a new array
+1. `#` in JavaScript makes a class member private
+1. `<span>` has inline display by default
+1. 
