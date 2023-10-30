@@ -2376,4 +2376,4 @@ In the source tab on the broswer dev tools, you can look at the JavaScript file 
 1. Map function maps an array to a new array
 1. `#` in JavaScript makes a class member private
 1. `<span>` has inline display by default
-1. 
+1. Testing git push with new dev environment
