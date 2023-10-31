@@ -52,6 +52,25 @@ git push
 * Update the caddy file to replace port :80 with your domain name, and where ever it says "yourdomain"
 * This will make it defaul to port 443 which will use caddy as a gateway and use HTTPS
 
+# Linux commands to know
+
+| Commands | Effect                                                                      |
+|----------|-----------------------------------------------------------------------------|
+| pwd      | Print working directory                                                     |
+| cd       | Change directory                                                            |
+| ls       | List items in current directory                                             |
+| vim      | Open Vim text editor                                                        |
+| nano     | Open nano text editor                                                       |
+| mkdir    | Make new directory                                                          |
+| mv       | Move an item or directory (-r)                                              |
+| rm       | Remove item or directory (-r)                                               |
+| man      | Open manually of a command                                                  |
+| ssh      | Securely remote into another machine                                        |
+| ps       | List all currently working services                                         |
+| wget     | Download from network with the option of downloading in the background (-b) |
+| sudo     | Super User DO, prefix to run a command as an admin                          |
+| chmod    | Change access mode of a file                                                |
+
 # HTML (Hyper text markup language)
 
 ### Elements and tags
@@ -2112,6 +2131,13 @@ function deleteElement(elementSelector) {
 deleteElement('#courses div');
 ```
 
+### Style
+If you want to change the style of an element, you can use the style element and access many CSS style rules that way
+
+```js
+document.getElementById("byu").style.color = "blue";
+```
+
 ### Injecting HTML
 
 You can also inject entire blocks of HTML into an element. However this is a common attack of hackers to inject JS and make request for sensitive info.
@@ -2376,4 +2402,7 @@ In the source tab on the broswer dev tools, you can look at the JavaScript file 
 1. Map function maps an array to a new array
 1. `#` in JavaScript makes a class member private
 1. `<span>` has inline display by default
-1. Testing git push with new dev environment
+1. ls -la List everything in a vertical list
+1. Port 80 is used for HTTP
+1. Port 443 is used for HTTPS
+1. Port 22 is used for SSH
