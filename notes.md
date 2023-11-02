@@ -2633,3 +2633,75 @@ Learn more about [cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Coo
 | 1997 | HTTP1.1 | put/patch/delete/options, persistent connection |
 | 2015 | HTTP2   | multiplex, server push, binary representation   |
 | 2022 | HTTP3   | QUIC for transport protocol, always encrypted   |
+
+
+## SOP and CORS
+Same Origin Policy (SOP) and Cross Origin Resource Sharing (CORS)
+
+These are policies that limit where data can be requested from
+
+### SOP
+SOP only allows JavaScript to make requests to a domain if it is the same domain that the user is currently viewing. This helps prevent hackers from spoofing the details on legitimate websites.
+
+### CORS
+SOP on its own blocks any outside requests, but some requests we do want to allow.
+
+CORS allows the client to specify the origin of a request, and let the server respond with what origins are allowed. The server could say all origins, or some specific origin, or refuse to answer and the default is it must be the same origin (SOP).
+
+Request:
+```http
+GET /api/auth/login HTTP/2
+Host: byu.instructure.com
+Origin: https://byu.iinstructure.com
+```
+Response:
+```http
+HTTP/2 200 OK
+Access-Control-Allow-Origin: https://byu.instructure.com
+```
+* Here the browser will see that the domains do not match, and so it blocks the request.
+
+A hacker could still proxy requests through their own server, and bypass the browser protections, and so you need to be careful how you implement this.
+
+### Third Party Services
+Make sure that any service you want allows your calling origin in its headers, otherwise you will not be able to use them.
+
+## Fetch
+
+The fetch function takes a URL and returns a promise. It is the default way to access APIs in JavaScript via HTTP requests.
+
+```js
+fetch('https://api.quotable.io/random')
+  .then((response) => response.json())
+  .then((jsonResponse) => {
+    console.log(jsonResponse);
+  });
+  ```
+The Repsone should be a JSON string:
+
+```js
+{
+  content: 'Never put off till tomorrow what you can do today.',
+  author: 'Thomas Jefferson',
+};
+```
+
+To do a POST request you populate the options parameter with the HTTP method and parameters:
+
+```js
+fetch('https://jsonplaceholder.typicode.com/posts', {
+  method: 'POST',
+  body: JSON.stringify({
+    title: 'test title',
+    body: 'test body',
+    userId: 1,
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
+  },
+})
+  .then((response) => response.json())
+  .then((jsonResponse) => {
+    console.log(jsonResponse);
+  });
+```
