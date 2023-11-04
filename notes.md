@@ -2705,3 +2705,230 @@ fetch('https://jsonplaceholder.typicode.com/posts', {
     console.log(jsonResponse);
   });
 ```
+
+## Service Design
+
+Web services provide the interactive functionality of a web application. 
+* Authenticate users
+* Track session state
+* Provide, Store, Analyze Data
+* Connect peers
+* Aggregrate user info.
+
+### Model and Sequence Diagrams
+Keep the service design close to the application's primary objects and interactions. Keep the user in mind as you design. Focus on the user side, not the programming side.
+
+Once you have defined the primary objects of  you can create [sequence diagrams](https://sequencediagram.org/) to show how they will interact with each other.
+
+### Leveraging HTTP
+Web services are usually provided over HTTP, so their structure and functionality will often mirror HTTP functions.
+* GET receive comments
+* POST make a comment
+* PUT update a comment
+* DELETE delete a comment
+
+MIME content types can also help you send specific data.
+
+### Endpoints / API
+
+A web service is usually divided up into multiple service endpoints.
+
+Each endpoint should provide a single functional purpose.
+
+Design of Endpoints:
+
+* **Grammatical** - With HTTP everything is a resource (noun). HTTP verbs can act on those resources. You can get, post, update, and delete these resources.
+
+* **Readable** - The resource you are referencing should be clearly readable in the URL path.
+
+* **Discoverable** - You should expose resources that contain other resources, so the user only needs to remember the top level Endpoint and discover the specifics of what they need from there.
+
+* **Compatible** - You should build your endpoints so that you can easily add new functionality without breaking existing clients.
+
+  * Version 1:
+    ```json
+    {
+      "name": "John Taylor"
+    }
+    ```
+  * Version 2:
+    ```json
+    {
+      "name": "John Taylor",
+      "givenName": "John",
+      "familyName": "Taylor"
+    }
+    ```
+  The old field of name is kept, and newer fields are made alongside. If we have access to all of our client code, we could deprecate old functionality.
+
+* **Simple** - Keep endpoints focused on the primary resources of your application. The more complicated they become the more likely you will have duplicate functionality and parallel access to the same resources.
+
+* **Documented** - [Open API Specification](https://spec.openapis.org/oas/latest.html) Can help you stay documented when designing endpoints. It is good practice to document API first so that you have a clear vision of the functionality ahead of time.
+
+
+### Remote Procedure Calls (RPC)
+RPC exposes service endpoints as simple function calls. Usually leverages the POST HTTP verb. The name of the function is usually the entire path of the URL or a parameter in the POST body
+
+```http
+POST /updateOrder HTTP/2
+
+{"id": 2197, "date": "20220505"}
+```
+
+```http
+POST /rpc HTTP/2
+
+{"cmd":"updateOrder", "params":{"id": 2197, "date": "20220505"}}
+```
+An advantage of RPC is that it maps directly to function calls that might exist within the server. This is also a disadvantage because it exposes the inner workings of the service.
+
+### REST (Representational State Transfer)
+REST always acts on a resource, which when acted on by a PUT verb, are cached and override the previous cache. GET always returns the same resource until PUT changes it.
+
+```http
+PUT /order/2197 HTTP/2
+
+{"date": "20220505"}
+```
+Proper HTTP verb is used and the URL indentifies the resource.
+
+### GraphQL
+
+GraphQL focuses on the manipulation of data instead of function calls. The idea behind it is to specify the data that is needed and filter out unneeded in one big query to minimize the number of REST or RPC calls.
+
+```graphql
+query {
+  getOrder(id: "2197") {
+    orders(filter: {date: {allofterms: "20220505"}}) {
+      store
+      description
+      orderedBy
+    }
+  }
+}
+```
+
+Essentialy GraphQL takes out a lot of the different endpoint logic you originally needed and reduces it to one endpoint.
+
+The big downside is this gives the client a lot of power to consume resources on the server. There are ways to specify scheme to help with this though.
+
+# Node.js
+
+Node.js or Node, was the first application of JavaScript to be able to run outside of the browser, so basically JavaScript can be the one language to power your entire technology stack.
+
+Browsers use the V8 engine created by google to run javascript. Node.js uses the same V8 engine and runs it in a console. So it is the same.
+
+### Installing NVM and Node.jss
+
+Node is installed and run in the console, and you can get NVM from the repository.
+
+### Running Node in the console
+
+You can run a line of JavaScript in the console
+
+```sh
+node -e console.log(1+1)
+```
+
+To run entire JavaScript files, you can use the file name as a parameter
+```sh
+node index.js
+```
+
+You can also just execute `node` to run it in an interpretive mode.
+
+## Node Package manager
+To load packages you must do two steps. First install the package locally on your machine useing the Node package manager NPM, and then include a `require` statement in your code that references the pacakge name.
+
+NPM knows how to access a massive repository of preexisting packages. You can search for packages on the [NPM website](https://www.npmjs.com/). However, before you start using NPM to install packages you need to initialize your code to use NPM. This is done by creating a directory that will contain your JavaScript and then running `npm init`. NPM will step you through a series of questions about the project you are creating. You can press the return key for each of questions if you want to accept the defaults. If you are always going to accept all of the defaults you can use `npm init -y` and skip the Q&A.
+
+```sh
+➜  mkdir npmtest
+➜  cd npmtest
+➜  npm init -y
+```
+
+### Package.json
+
+In the directory you will see a `package.json` file. It contains three things:
+1. Metadata about your project such as name and default entry JS file
+1. Command scripts that you can execute to do things like run, test, or distribute your code.
+1. Pacakges that this project depends on.
+
+You can run the scripts with `npm run [script]`
+
+```json
+{
+  "name": "npmtest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
+```
+
+### Installing Packages
+You can easily install packages in the command line
+
+```sh
+➜  npm install give-me-a-joke
+```
+
+You can also uninstall a package:
+```sh
+npm uninstall <package name here>
+```
+
+⚠ Note that when you start installing package dependencies, NPM will create an additional file named package-lock.json and a directory named node_modules in your project directory. The node_modules directory contains the actual JavaScript files for the package and all of its dependent packages. As you install several packages this directory will start to get very large. You do not want to check this directory into your source control system since it can be very large and can be rebuilt using the information contained in the package.json and package-lock.json files. So make sure you include node_modules in your .gitignore file.
+
+When you clone source code from GitHub to a new location, the first thing you should do is run npm install in the project directory.
+
+## Here are the basic steps
+This may seem like a lot of work but after you do it a few times it will begin to feel natural. Just remember the main steps.
+
+1. Create your project directory
+1. Initialize it for use with NPM by running `npm init -y`
+1. Make sure `.gitignore` file contains `node_modules`
+1. Install any desired packages with `npm install <package name here>`
+1. Add `require('<package name here>')` to your application's JavaScript
+1. Use the code the package provides in your JavaScript
+1. Run your code with `node index.js`
+
+## Create a Web service
+
+With JavaScript we can write code that listens on a network port, receives HTTP requests, processes them, and then responds.
+
+Create Project
+```sh
+➜ mkdir webservicetest
+➜ cd webservicetest
+➜ npm init -y
+```
+
+Next open VS Code and create a file named `index.js`. Paste the following code into the file and save.
+
+```sh
+const http = require('http');
+const server = http.createServer(function (req, res) {
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.write(`<h1>Hello Node.js! [${req.method}] ${req.url}</h1>`);
+  res.end();
+});
+
+server.listen(8080, () => {
+  console.log(`Web service listening on port 8080`);
+});
+```
+
+This code uses the Node.js built in http package to create our HTTP server using the http.createServer function along with a callback function that takes a request (req) and response (res) object.
+
+If you go to `localhost:8080` then you can see that the server is listening and will respond.
+
+You can startup the server not only in the command line, but in VS code with the F5 key.
+
+From now on you will need to run your code from the Node.JS server, you can't use the VS code liver server extension anymore.
