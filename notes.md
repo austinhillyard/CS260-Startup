@@ -3126,3 +3126,28 @@ app.listen(port, function () {
   console.log(`Listening on port ${port}`);
 });
 ```
+
+## Debugging Node.js
+
+You can't use a browser debugger for a backend server, but you can use VS code's debugging tools.
+  * *Make sure you save your file before running the debugger!*
+Press F5 and choose your debugger to debug.
+* F10 to step to the next line
+* F11 to step into a function call.
+
+### Debugging a Node.js web service
+
+You can set break points on listeners and endpoint calls and when you make a request with your browser your breakpoint should hit, and you can inspect the HTTP requests
+
+### Nodemon
+
+Nodemon is a wrapper around node that watches for file changes. WHen it detects a change it will automatically restart node, which will help make changes on the fly while debugging integrate better.
+
+To make VS code launch Nodemon automatically, you need a couple steps.
+* `CTRL-SHIFT-P`
+* Type the command `Debug: Add configuration`
+* Type `Node.js`
+* Select `Node.js Nodemon setup`
+* In the launch configuration file that it creates, change the program from `app.js` to whatever the main JavaScript file is for your application, then save the config file.
+
+Now when you debug, it will automatically launch with Nodemon.
