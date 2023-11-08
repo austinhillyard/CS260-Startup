@@ -37,6 +37,11 @@ git push
 
 ### My Elastic IP Address: 18.205.101.148
 
+ssh into my server:
+```sh
+ssh -i [key pair file] ubuntu@[ip address]
+```
+
 ## Caddy
 * Handles rotation of web certificates. Supports HTTPS
 * Acts as a gateway and will redirect subdomain requests properly
@@ -3151,3 +3156,169 @@ To make VS code launch Nodemon automatically, you need a couple steps.
 * In the launch configuration file that it creates, change the program from `app.js` to whatever the main JavaScript file is for your application, then save the config file.
 
 Now when you debug, it will automatically launch with Nodemon.
+
+## Service Daemons - PM2
+
+The term `daemon` comes from the idea of something that is always there working in the background.
+
+A service daemon is a program that will keep running after a shutdown.
+
+The AWS AMI has been setup with PM2 already, but you can check it if you run into problems.
+
+Here are some useful commands:
+
+| Command                                                    | Purpose                                                                          |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **pm2 ls**                                                 | List all of the hosted node processes                                            |
+| **pm2 monit**                                              | Visual monitor                                                                   |
+| **pm2 start index.js -n simon**                            | Add a new process with an explicit name                                          |
+| **pm2 start index.js -n startup -- 4000**                  | Add a new process with an explicit name and port parameter                       |
+| **pm2 stop simon**                                         | Stop a process                                                                   |
+| **pm2 restart simon**                                      | Restart a process                                                                |
+| **pm2 delete simon**                                       | Delete a process from being hosted                                               |
+| **pm2 delete all**                                         | Delete all processes                                                             |
+| **pm2 save**                                               | Save the current processes across reboot                                         |
+| **pm2 restart all**                                        | Reload all of the processes                                                      |
+| **pm2 restart simon --update-env**                         | Reload process and update the node version to the current environment definition |
+| **pm2 update**                                             | Reload pm2                                                                       |
+| **pm2 start env.js --watch --ignore-watch="node_modules"** | Automatically reload service when index.js changes                               |
+| **pm2 describe simon**                                     | Describe detailed process information                                            |
+| **pm2 startup**                                            | Displays the command to run to keep PM2 running after a reboot.                  |
+| **pm2 logs simon**                                         | Display process logs                                                             |
+| **pm2 env 0**                                              | Display environment variables for process. Use `pm2 ls` to get the process ID    |
+
+### Registering a new web service
+If you want to setup another subdomain that accesses a different web service on your web server, you need to follow these steps.
+1. Add the rule to the caddyfile to tell it how to direct requests for the domain.
+1. Create a directory and add the files for the web service
+1. Configure PM2 to host the webservice
+
+### Modifying Caddyfile
+SSH into your server.
+
+Copy the section for the startup subdomain and alter it so that it represents the desired subdomain and give it a different port number that is not currently used on your server.
+
+```
+tacos.cs260.click {
+  reverse_proxy _ localhost:5000
+  header Cache-Control none
+  header -server
+  header Access-Control-Allow-Origin *
+}
+```
+
+This tells Caddy that when it gets a request for the new subdomain it will act as a proxy for those request and pass them on to the web service that is listening on the same machine, on port 5000.
+
+The other settings tell Caddy to return headers that disable cahcing, hide the fact that Caddy is the server (for security), and allow any other origin server to make endpoint requests to this subdomain (basically disabling CORS)
+
+### Create the Web service
+If you try and access the domain now, it will error because no service is listening on that port.
+
+You can create a service listener that dynamically takes a port like this:
+```js
+const port = process.argv.length > 2 ? process.argv[2] : 3000;
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});
+```
+And then start the service.
+```sh
+node index.js 5000
+```
+
+### Configure PM2 to host the web service
+Once you terminate your SSH though, the service will stop, this is where PM2 daemon comes in.
+
+Run the following command to start the service:
+```sh
+cd ~/services/tacos
+pm2 start index.js -n tacos -- 5000
+pm2 save
+```
+
+## UI Testing
+
+Test Driven Development (TDD) is a proven methodology for accelerating application creation, protecting against regression bugs, and demonstrating correctness.
+
+UI is tough to test automatically, as it requires a browser to execute. There are many ways your program can experience unexpected input. Fortunately there are some tools people have made to help testing be done easier.
+
+### Automating the browser - Playwright
+There are many automated testing options. Playwright integrates well with VS Code and runs as a Node.js process, it is also one the least flaky testing frameworks.
+
+First we need to install the Playwright package through npm, and get the Playwright vs code extension.
+
+```sh
+npm init playwright@latest
+```
+
+Once there, you can run tests in the extention, and create tests in the test folder.
+
+You can follow the format and create your own tests.
+
+### Testing various devices - BrowserStack
+
+BrowserStack is a means of testing your website on various devices. It has free trials, and has Iphone, Android, Windows, and Mac test devices.
+
+## Endpoint Testing
+
+We will use Jest to test our endpoints.
+
+In order to allow Jest to start up the HTTP server when running tests, we initialize the application a little bit differently than we have in the past. Normally, we would have just started listening on the Express app object after we defined our endpoints. Instead we export the Express app object from our server.js file and then import the app object in the index.js file that is used to run our service.
+
+index.js
+```js
+const app = require('./server');
+
+const port = 8080;
+app.listen(port, function () {
+  console.log(`Listening on port ${port}`);
+});
+```
+
+To launch the service using jest we create another file with the suffix of `.test.js`. Any file with this suffix will be seen by jest and examined for tests to run.
+
+To install jest we run this command with the argument `-D` which tells NPM to install jest as a development package
+
+```sh
+npm install jest -D
+```
+
+Now we replace the `scripts` section fo the `package.json` file with a new command that will run our tests with Jest.
+
+```json
+"scripts": {
+  "test": "jest"
+},
+```
+
+Now we can run the test command and see the results of our tests
+
+```sh
+npm run test
+```
+
+### Testing Endpoints
+
+To test endpoints we need another package so we can make HTTP requests without having to actually send them over the network. This is done with `supertest`
+
+```sh
+npm install supertest -D
+```
+
+To make an HTTP request you pass the express `app` object to the `supertest` `request` function and then chain on the HTTP verb function that you want to call, along with the endpoint path.
+
+A test might look like this in your test.js file:
+
+```js
+const request = require('supertest');
+const app = require('./server');
+
+test('getStore returns the desired store', (done) => {
+  request(app)
+    .get('/store/provo')
+    .expect(200)
+    .expect({ name: 'provo' })
+    .end((err) => (err ? done(err) : done()));
+});
+```
+With TDD you can write your tests first to define functionality and then your code is done when your tests pass.
