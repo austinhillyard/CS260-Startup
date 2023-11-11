@@ -1,10 +1,25 @@
-const http = require('http');
-const server = http.createServer(function (req, res) {
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.write(`<h1>Hello Node.js! [${req.method}] ${req.url}</h1>`);
-  res.end();
+const express = require('express');
+
+//Setup app object
+const app = express();
+
+//Setup manually port option.
+const port = process.argv.length > 2 ? process.argv[2] : 3000;
+
+app.use(express.json);
+
+//Provide public files.
+app.use(express.static('public'));
+
+//Router for service APIs
+let apiRouter = express.Router();
+app.use("/api", apiRouter);
+
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`)
 });
 
-server.listen(8080, () => {
-  console.log(`Web service listening on port 8080`);
+//If the path is unknown, send the default file.
+app.use((_req, res) => {
+  res.sendFile('index.html', { root: 'public' });
 });
