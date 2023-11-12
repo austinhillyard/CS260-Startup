@@ -19,12 +19,6 @@ app.use(express.static('public'));
 let apiRouter = express.Router();
 app.use("/api", apiRouter);
 
-//If the path is unknown, send the default file.
-app.use((_req, res) => {
-  console.log("Sending root file index.html");
-  res.sendFile('index.html', { root: 'public' });
-});
-
 app.listen(port, host, () => {
   console.log(`Listening on port ${port}`)
 });
@@ -48,6 +42,12 @@ apiRouter.get('/import/:id', async (req, res) => {
   let games = await steamAPI(id)
   console.log("Sending Game API response to browser.");
   res.send(games);
+});
+
+//If the path is unknown, send the default file.
+app.use((_req, res) => {
+  console.log("Sending root file index.html");
+  res.sendFile('index.html', { root: 'public' });
 });
 
 let fs = require('fs');
