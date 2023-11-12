@@ -47,6 +47,7 @@ main {
     flex-direction: row;
     padding: 1em;
     justify-items: center;
+    flex-wrap: wrap;
     
 }
 .Dropdowns * {
@@ -153,7 +154,7 @@ footer {
     flex: 0 20px;
 }
 
-@media (max-height: 600px) {
+@media screen and (orientation:portrait) {
     footer {
       display: none;
     }
@@ -162,6 +163,6 @@ footer {
       flex-direction: column;
     }
     .gameTimeView {
-        grid-template-columns: repeat(2, minmax(100px, 1fr));
+        flex-wrap: wrap;
     }
   }

@@ -95,7 +95,7 @@ footer {
     justify-content: flex-end;
 }
  
-@media (max-height: 600px) {
+@media screen and (orientation:portrait) {
     header {
       display: none;
     }

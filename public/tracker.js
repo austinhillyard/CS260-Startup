@@ -254,6 +254,7 @@ function clearDisplay() {
 }
 
 //Refresh button that reruns the import functionality
-function refreshData() {
-    //Will get this working when I get the API on the backend handled.
+async function refreshData() {
+    await getOwnedGames(localStorage.getItem("id"));
+    location.reload();
 }
