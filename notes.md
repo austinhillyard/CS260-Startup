@@ -3322,3 +3322,70 @@ test('getStore returns the desired store', (done) => {
 });
 ```
 With TDD you can write your tests first to define functionality and then your code is done when your tests pass.
+
+# Storage Services
+
+Web applications need to store files. A database can house those files but it is usually overkill
+
+**You should not store your files directly on your server**
+1. Your server has limited space, and if it runs out it will crash
+1. Your server should be considered temporary, that can be copied and replaced at any time.
+1. You need backup copies, and your server will lose any data if your server disappears, which you should always assume will happen.
+
+## AWS S3
+Popular Database service
+* Unlimited capacity
+* Only pay for storage you use
+* Optimized for global access
+* Keeps multiple redundant copies of every file
+* You can versino files
+* Supports metadata tags
+* You can easily control publicity of files
+
+If you choose to use a Database, you can use them with AWS SDK.
+
+***Do not list your credentials publicly in your github! They will immediately be stolen***
+
+## Data Services
+
+Web applications commonly need to store persistent data.
+
+Commonly this was done with SQL, but since 2010, other data services that do other things better ecame popular. They have their own advantages and weaknesses and use a different underlying structure. These are called NoSQL.
+
+Here are some popular data services:
+
+| Service       | Specialty             |
+| ------------- | --------------------- |
+| MySQL         | Relational queries    |
+| Redis         | Memory cached objects |
+| ElasticSearch | Ranked free text      |
+| MongoDB       | JSON objects          |
+| DynamoDB      | Key value pairs       |
+| Neo4J         | Graph based data      |
+| InfluxDB      | Time series data      |
+
+## MongoDB
+
+In this project we will use MongoDB. Mongo uses JSON objects as its core data model. 
+
+Unlike Relational Databases with rigid table definition where each column must be strictly typed, Mongo has no strict schema. You can have common fields that are missing, and specialized fields when you need.
+
+Here is an example of queries with Mongo:
+
+```js
+// find all houses
+db.house.find();
+
+// find houses with two or more bedrooms
+db.house.find({ beds: { $gte: 2 } });
+
+// find houses that are available with less than three beds
+db.house.find({ status: 'available', beds: { $lt: 3 } });
+
+// find houses with either less than three beds or less than $1000 a night
+db.house.find({ $or: [(beds: { $lt: 3 }), (price: { $lt: 1000 })] });
+
+// find houses with the text 'modern' or 'beach' in the summary
+db.house.find({ summary: /(modern|beach)/i });
+```
+
