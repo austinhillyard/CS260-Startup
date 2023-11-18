@@ -1,0 +1,19 @@
+{
+  "name": "cs260-startup",
+  "version": "1.0.0",
+  "description": "Repository for the CS260 Startup Web project",
+  "main": "import.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mongodb": "^6.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.39.0",
+    "@types/node": "^20.9.0"
+  }
+}

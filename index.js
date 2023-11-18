@@ -27,10 +27,20 @@ let ids = [];
 
 apiRouter.post('/id', (req, res) => {
   let id = req.body.steamId;
+  let username = req.body.username;
+  let idPair = {id: id, username:username};
   console.log(`Received id from browser: ${id}, saving...`);
-  ids.push(id);
+  addUser(idPair);
   console.log("Saved. Sending response.");
   res.send(id);
+});
+
+//See if username exists in database and pull ID from that.
+apiRouter.get('/login', (req, res) => {
+  let username = req.body.username;
+  console.log('Received username from browser');
+  let user = getUser(username);
+  res.send(user);
 });
 
 //Import API functionality
@@ -51,6 +61,7 @@ app.use((_req, res) => {
 });
 
 let fs = require('fs');
+const { addUser, getUser } = require('./database');
 let apiKeys;
 
 try {

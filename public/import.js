@@ -42,7 +42,7 @@ async function saveIdToServer(id) {
         const response = await fetch('/api/id', {
             method: "POST",
             headers: {"content-type": "application/json"},
-            body: JSON.stringify({steamId: id})
+            body: JSON.stringify({steamId: id, username: localStorage.getItem("username")})
         })
 
         console.log(response);

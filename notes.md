@@ -3389,3 +3389,82 @@ db.house.find({ $or: [(beds: { $lt: 3 }), (price: { $lt: 1000 })] });
 db.house.find({ summary: /(modern|beach)/i });
 ```
 
+### Using Mongo:
+You can use a `MongoClient` object to make a client connection to the database server.
+
+```js
+const { MongoClient } = require('mongodb');
+
+const userName = 'holowaychuk';
+const password = 'express';
+const hostname = 'mongodb.com';
+
+const url = `mongodb+srv://${userName}:${password}@${hostname}`;
+
+const client = new MongoClient(url);
+```
+
+With a client connection you can then get a database object and then a collection object. The collection object allows you to insert and query for documents.
+
+When you insert a document, if the database or collection does not yet exist, it will create them, and it will generate a unique id for the document as well.
+
+```js
+const collection = client.db('rental').collection('house');
+
+const house = {
+  name: 'Beachfront views',
+  summary: 'From your bedroom to the beach, no shoes required',
+  property_type: 'Condo',
+  beds: 1,
+};
+await collection.insertOne(house);
+```
+
+To query for a document you can use the find function. The find function is asynchronous, so you should use the `await` keyword with the promise
+
+```js
+const cursor = collection.find();
+const rentals = await cursor.toArray();
+rentals.forEach((i) => console.log(i));
+```
+
+If you do not use any parameters with the `find` function, it will return all documents in the collection, and it will include the unique ID it generated with the query.
+
+```js
+[
+  {
+    _id: new ObjectId('639a96398f8de594e198fc13'),
+    name: 'Beachfront views',
+    summary: 'From your bedroom to the beach, no shoes required',
+    property_type: 'Condo',
+    beds: 1,
+  },
+];
+```
+
+You can provide a query and an options to the `find` function to fine tune your search:
+
+```js
+const query = { property_type: 'Condo', beds: { $lt: 2 } };
+
+const options = {
+  sort: { price: -1 },
+  limit: 10,
+};
+
+const cursor = collection.find(query, options);
+const rentals = await cursor.toArray();
+rentals.forEach((i) => console.log(i));
+```
+
+Find more details on Mongo tutorials [here](https://www.mongodb.com/docs/)
+
+## MongoDB Atlas
+
+Most management of data service is managed by 3rd parties nowadays.
+
+MongoDB Atlas is a database service that will store your code and allow you to quickly connect.
+
+### Keeping keys out of your code
+
+You should keep your keys and login info in a JSON file that is not tracked by your git.
