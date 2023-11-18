@@ -10,20 +10,13 @@
     </head>
     <body>
         <header>
-            <!-- Header welcoming the user to the website-->
-            <nav>
-                <!-- Menu area to navigate the user around to the different tools-->
-                <menu>
-                    <a href="import.html">Import Tool</a>
-                    <a href="tracker.html">Tracker</a>
-                </menu>
-            </nav>
+            <h2>Game Tracker</h2>
         </header>
 
         <main>
             <h2>Login</h2>
             <p>Login or create an account</p>
-            <form method="get" action = "tracker.html">
+            <form method="get">
                 <!--Login and Create Account placeholder form for users.-->
                 <section class="fields">
                     <div class="username">
@@ -37,9 +30,9 @@
                 </section>
                 <!-- Login Option-->
                 <section class="buttons">
-                    <button id="loginButton" type="submit" onclick="login()">Login</button>
+                    <button id="loginButton" type="submit" onclick="loginUser()">Login</button>
                     <!-- Create Account Option-->
-                    <button id="createAccountButton" type="submit">Create Account</button>
+                    <button id="createAccountButton" type="submit" onclick="createUser()">Create Account</button>
                 </section>
             </form>
             

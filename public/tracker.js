@@ -68,11 +68,6 @@ class Game {
 
 //Loads the page with games, or a message saying to use the import tool.
 window.onload = function() {
-    //TODO: When the user successfully logs in it should auto pull the newest info automatically, but not every time the page is refreshed.
-    // const username = localStorage.getItem("username");
-    // if (username != null) {
-    //     loginRefresh();
-    // }
     const gamesString = localStorage.getItem("games");
     if (gamesString != null) {
         filterListener();

@@ -1,18 +1,37 @@
-//TODO: make login functions actually communicate with server.
 
-function login() {
-    localStorage.setItem("authenticationToken", authenticationToken());
+async function loginUser() {
+    loginOrCreate(`/api/auth/login`);
+}
+  
+async function createUser() {
+    loginOrCreate(`/api/auth/create`);
 }
 
-function createAccount() {
-    localStorage.setItem("newAccountToken", authenticationToken());
-}
-
-//Get the data from the username and password field and return it as an object.
-function authenticationToken() {
-    const username = document.querySelector("#username");
-    localStorage.setItem("username", username.value);
-    const password = document.querySelector("#password");
-    const token = { username:username.value, password:password.value };
-    return JSON.stringify(token);
-}
+async function loginOrCreate(endpoint) {
+    const username = document.querySelector('#username')?.value;
+    const password = document.querySelector('#password')?.value;
+    const response = await fetch(endpoint, {
+      method: 'post',
+      body: JSON.stringify({ email: username, password: password }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
+  
+    if (response.ok) {
+      localStorage.setItem('username', username);
+      //If user already exists in databse, import data automatically
+      const userResponse = await fetch(`/api/user/` + username);
+      let body = await userResponse.json();
+      if (body.steamId) {
+        localStorage.setItem('id', body.steamId);
+      }
+      window.location.href = 'tracker.html';
+    } else {
+      const body = await response.json();
+      const modalEl = document.querySelector('#msgModal');
+      modalEl.querySelector('.modal-body').textContent = `⚠ Error: ${body.msg}`;
+      const msgModal = new bootstrap.Modal(modalEl, {});
+      msgModal.show();
+    }
+  }
