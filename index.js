@@ -25,10 +25,11 @@ app.listen(port, host, () => {
 
 let ids = [];
 
+//Saved ID with corresponding username to database
 apiRouter.post('/id', (req, res) => {
   let id = req.body.steamId;
   let username = req.body.username;
-  let idPair = {id: id, username:username};
+  let idPair = {steamId: id, username:username};
   console.log(`Received id from browser: ${id}, saving...`);
   addUser(idPair);
   console.log("Saved. Sending response.");

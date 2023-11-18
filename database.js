@@ -25,7 +25,14 @@ const db = client.db('gametracker');
 const collection = db.collection('users');
 
 async function addUser(user) {
-  const result = await collection.insertOne(user);
+  const result = await collection.updateOne(
+    { username: user.username },
+    {
+      $set: { steamId: user.steamId }, // always updates steamId
+      $setOnInsert: { username: user.username } // inserts both when it's a new document
+    },
+    { upsert: true }
+  );
   return result;
 }
 

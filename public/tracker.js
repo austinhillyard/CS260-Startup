@@ -68,6 +68,11 @@ class Game {
 
 //Loads the page with games, or a message saying to use the import tool.
 window.onload = function() {
+    //TODO: When the user successfully logs in it should auto pull the newest info automatically, but not every time the page is refreshed.
+    // const username = localStorage.getItem("username");
+    // if (username != null) {
+    //     loginRefresh();
+    // }
     const gamesString = localStorage.getItem("games");
     if (gamesString != null) {
         filterListener();
@@ -251,6 +256,27 @@ async function applyView(newFilters=filters, newSorting=sorting, gameViewOn=sepa
 
 function clearDisplay() {
     document.getElementById("GameView").replaceChildren();
+}
+
+//Check database for ID and automatically run 3rd party API
+async function loginRefresh() {
+    try {
+        const response = await fetch('/login', {
+            method: "GET",
+            headers: {"content-type": "application/json"},
+            body: JSON.stringify({username: localStorage.getItem("username")})
+        })
+        console.log(response);
+        localStorage.setItem("id", response.body.id);
+        console.log("Id in localstorage: " + localStorage.getItem("id"));
+        console.log("Getting games from steam...");
+        await getOwnedGames(localStorage.getItem("id"));
+        
+    }
+    catch (err) {
+        console.log("Error encounterd: ", err);
+        console.log("Unable to find ID for user from server");
+    }
 }
 
 //Refresh button that reruns the import functionality
