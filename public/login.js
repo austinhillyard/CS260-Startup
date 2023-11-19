@@ -12,7 +12,7 @@ async function loginOrCreate(endpoint) {
     const password = document.querySelector('#password')?.value;
     const response = await fetch(endpoint, {
       method: 'post',
-      body: JSON.stringify({ email: username, password: password }),
+      body: JSON.stringify({ username: username, password: password }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },
@@ -29,9 +29,6 @@ async function loginOrCreate(endpoint) {
       window.location.href = 'tracker.html';
     } else {
       const body = await response.json();
-      const modalEl = document.querySelector('#msgModal');
-      modalEl.querySelector('.modal-body').textContent = `⚠ Error: ${body.msg}`;
-      const msgModal = new bootstrap.Modal(modalEl, {});
-      msgModal.show();
+      alert(body.msg);
     }
   }

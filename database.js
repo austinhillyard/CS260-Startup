@@ -28,12 +28,12 @@ const client = new MongoClient(uri, {
 const db = client.db('gametracker');
 const collection = db.collection('users');
 
-async function createUser(email, password) {
+async function createUser(username, password) {
   // Hash the password before we insert it into the database
   const passwordHash = await bcrypt.hash(password, 10);
 
   const user = {
-    email: email,
+    username: username,
     password: passwordHash,
     token: uuid.v4(),
   };
@@ -55,8 +55,7 @@ async function updateId(user) {
 }
 
 function getUser(username) {
-  const query = {username: username};
-  const user = db.collection(collection).find(query);
+  const user = collection.findOne({username: username});
 
   return user;
 }
