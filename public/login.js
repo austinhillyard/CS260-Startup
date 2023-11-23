@@ -10,6 +10,7 @@ async function createUser() {
 async function loginOrCreate(endpoint) {
     const username = document.querySelector('#username')?.value;
     const password = document.querySelector('#password')?.value;
+    console.log("Sending fetch request");
     const response = await fetch(endpoint, {
       method: 'post',
       body: JSON.stringify({ username: username, password: password }),
@@ -18,6 +19,7 @@ async function loginOrCreate(endpoint) {
       },
     });
   
+    console.log("Received response!", response);
     if (response.ok) {
       localStorage.setItem('username', username);
       //If user already exists in databse, import data automatically

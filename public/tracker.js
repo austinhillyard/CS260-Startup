@@ -69,13 +69,16 @@ class Game {
 //Loads the page with games, or a message saying to use the import tool.
 window.onload = function() {
     const gamesString = localStorage.getItem("games");
+    const idString = localStorage.getItem("id");
     if (gamesString != null) {
         filterListener();
         sortListener();
         checkListener();
         loadGames(gamesString);
     }
-
+    else if (idString != null) {
+        refreshData();
+    }
     else {
         document.querySelector("#GameView").innerHTML = "No games detected for user. Please use the import tool";
     }
@@ -279,3 +282,12 @@ async function refreshData() {
     await getOwnedGames(localStorage.getItem("id"));
     location.reload();
 }
+
+function logout() {
+    localStorage.removeItem('username');
+    localStorage.removeItem('games');
+    localStorage.removeItem('id');
+    fetch(`/api/auth/logout`, {
+      method: 'delete',
+    }).then(() => (window.location.href = '/'));
+  }

@@ -31,15 +31,18 @@ app.listen(port, host, () => {
 
 // CreateAuth token for a new user
 apiRouter.post('/auth/create', async (req, res) => {
-  const check = await DB.getUser(req.body.user);
+  const check = await DB.getUser(req.body.username);
   if (check) {
+    console.log("Error: existing user, sending response.")
     res.status(409).send({ msg: 'Existing user' });
-  } else {
+  } 
+  else {
     const user = await DB.createUser(req.body.username, req.body.password);
 
     // Set the cookie
     setAuthCookie(res, user.token);
 
+    console.log("User successfully created!");
     res.send({
       id: user._id,
     });
@@ -52,14 +55,16 @@ apiRouter.post('/auth/login', async (req, res) => {
   if (user) {
     if (await bcrypt.compare(req.body.password, user.password)) {
       setAuthCookie(res, user.token);
+      console.log("Successfully logged in!");
       res.status(200).send({ id: user._id });
+      return;
     }
-    return
   }
   }
   catch (err) {
     console.log(err);
   }
+  console.log("Unable to login.")
   res.status(401).send({ msg: 'Unauthorized or No Account' });
 });
 
@@ -110,7 +115,7 @@ secureApiRouter.post('/id', (req, res) => {
   let username = req.body.username;
   let idPair = {steamId: id, username:username};
   console.log(`Received id from browser: ${id}, saving...`);
-  (idPair);
+  DB.updateId(idPair);
   console.log("Saved. Sending response.");
   res.send(id);
 });

@@ -14,11 +14,20 @@ header {
     background-color: darkslateblue;
     flex: 0, 30px;
     align-items: start;
-    flex-direction: column;
 }
 
 header a {
+    float: left;
     padding: .5em;
+}
+
+header button {
+    float: right;
+    margin: 1em
+}
+
+nav button:hover {
+    background-color:#283747 !important;
 }
 
 main {
@@ -86,9 +95,15 @@ button {
     border-radius: .5em;
 }
 
+#logout {
+    background-color: #17202A;
+}
+
 button:hover {
     background-color: #5e549d;
 }
+
+
 
 main div {
     margin: .5em;
