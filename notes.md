@@ -3775,3 +3775,62 @@ app.listen(port, function () {
   console.log(`Listening on port ${port}`);
 });
 ```
+
+# WebSocket
+HTTP is a server/client relationship. Peer to Peer communication had to go through a server and it created some issues with applications pinging servers for updates.
+
+Websocket connects two peers together so they can communicate together seamlessly. If you are facilitating more than two users you still need a server to forwards the info.
+
+## Creating a WebSocket
+```js
+const socket = new WebSocket('ws://localhost:9900');
+
+socket.onmessage = (event) => {
+  console.log('received: ', event.data);
+};
+
+socket.send('I am listening');
+```
+
+The server uses the `ws` package to create a WebSocketServer that is listening on the same port the browser is using. By specifying a port when you create the WebSocketServer, you are telling the server to listen for HTTP connections on that port and to automatically upgrade them to a WebSocket connection if the request has a connection: Upgrade header.
+
+```js
+const { WebSocketServer } = require('ws');
+
+const wss = new WebSocketServer({ port: 9900 });
+
+wss.on('connection', (ws) => {
+  ws.on('message', (data) => {
+    const msg = String.fromCharCode(...data);
+    console.log('received: %s', msg);
+
+    ws.send(`I heard you say "${msg}"`);
+  });
+
+  ws.send('Hello webSocket');
+});
+```
+
+After a connection is detected, it calls the server's `on connection` callback. The server can then send messages with the `send` function, a register a callback using the `on message` function to receive messages
+
+## Debugging WebSocket
+You can debug the communications with the browser network tab and debugging your endpoints.
+On the network tab you can click on the communication and then the messages tab to see specific messages being sent back and forth.
+
+## WebSocket Chat
+ws is non secure WebSocket. wss is Secure.
+
+```js
+// Create a websocket object
+const wss = new WebSocketServer({ noServer: true });
+
+// Handle the protocol upgrade from HTTP to WebSocket
+server.on('upgrade', (request, socket, head) => {
+  wss.handleUpgrade(request, socket, head, function done(ws) {
+    wss.emit('connection', ws, request);
+  });
+});
+```
+
+This server setup allows the peers to connect to eachother, as there is `noServer`
+The upgrade notification will allow the users to upgrade to WebSocket instead of HTTP

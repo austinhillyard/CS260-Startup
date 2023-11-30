@@ -160,14 +160,14 @@ hr.bottom {
     border: rgb(77, 97, 118);
 }
 
+footer {
+    flex: 0 20px;
+}
 
 .Backlog {
     flex: 1;
 }
 
-footer {
-    flex: 0 20px;
-}
 
 @media screen and (orientation:portrait) {
     footer {

@@ -131,6 +131,8 @@ function putGamesInTimeSlots(games) {
             moreThanYearGames.push(game);
         }
     }
+    //Insert one week games into localstorage for sharer functionality
+    localStorage.setItem("oneWeekGames", JSON.stringify(oneWeekGames));
 }
 
 function insertGames() {

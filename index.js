@@ -2,6 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const DB = require('./database.js');
+const { sharerProxy } = require('./sharerProxy.js');
 //Setup app object
 const app = express();
 
@@ -25,9 +26,9 @@ app.use(express.static('public'));
 let apiRouter = express.Router();
 app.use("/api", apiRouter);
 
-app.listen(port, host, () => {
-  console.log(`Listening on port ${port}`)
-});
+// app.listen(port, host, () => {
+//   console.log(`Listening on port ${port}`)
+// });
 
 // CreateAuth token for a new user
 apiRouter.post('/auth/create', async (req, res) => {
@@ -159,6 +160,12 @@ try {
 catch (err) {
   console.log(err);
 }
+
+const httpService = app.listen(port, () => {
+  console.log(`Listening on port: ${port}`);
+})
+
+sharerProxy(httpService);
 
 async function steamAPI(id) {
   const apiLink = "https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=KEY&steamid=ID&format=json&include_appinfo=true&include_played_free_games=true";
