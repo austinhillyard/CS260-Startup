@@ -103,3 +103,10 @@ This deliverable includes implementing the backend service:
     1. The first is when you input your steam URL it gets, your id and it saves it to the database just in an array for now. Future functionality will tie this to the user.
     1. The second is executed right after the id endpoint, and it gets the game data from the server after the server calls the steam API. This data is then saved to local storage and can be viewed in the tracker screen.
 * **Backend Endpoints** - The above mentioned endpoints have backend counterparts as required.
+
+# WebSocket Deliverable
+This deliverable includes implementing basic WebSocket functionality on the new "Sharer" page.
+* **Backend Listener** - Backend listens for Websocket communication and forwards it to all current connections
+* **Frontend Display** - Frontend connects to the websocket, and receives messages from the backend.
+* **Data Sent over WebSocket** - Upon a user clicking the "Share" button, the user's games from this week are shared to all other connections in a JSON object.
+* **WebSocket Data Displayed** - When the user receives a message, the data is displayed in the main "view" element. The display mirrors the tracker page's display for game cards, and uses the same kind of function to display them.
