@@ -293,3 +293,4 @@ function logout() {
       method: 'delete',
     }).then(() => (window.location.href = '/'));
   }
+
