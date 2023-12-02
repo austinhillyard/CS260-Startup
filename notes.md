@@ -3834,3 +3834,505 @@ server.on('upgrade', (request, socket, head) => {
 
 This server setup allows the peers to connect to eachother, as there is `noServer`
 The upgrade notification will allow the users to upgrade to WebSocket instead of HTTP
+
+# Web Frameworks
+
+Web frameworks make writing web apps easier by providing tools for completing common application tasks. Some frameworks take things beyond standard web technologies and create new hybrid file formoats that combine things like HTML and JavaScript into a single file. Things like React JSX, Vue SFC, Svelte etc.
+* Svelte and Vue combine HTML, CSS, and JavaScript into one File
+* React only combines JavaScript and HTML. CSS is declared outside the hybrid file
+
+### Angular Component
+An angular component defines what JavaScript, HTML, and CSS are combined together. This keeps a fairly strong separation of files that usually grouped together in a directory rather than using the single file representation
+```js
+@Component({
+  selector: 'app-hello-world',
+  templateUrl: './hello-world.component.html',
+  styleUrls: ['./hello-world.component.css'],
+})
+export class HelloWorldComponent {
+  name: string;
+  constructor() {
+    this.name = 'world';
+  }
+}
+```
+```html
+<p>hello {{name}}</p>
+```
+```css
+p {
+  color: green;
+}
+```
+
+# React Tutorial
+
+## Hello World
+First we must load the react modules
+```html
+<html>
+  <head>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+  </body>
+</html>
+```
+Next we make a `script` tag that can modify our HTML DOM
+
+```js
+      <script type="text/babel">
+        const root = ReactDOM.createRoot(
+            document.getElementById('mydiv')
+        );
+        const element = <h1>Hello, world</h1>;
+        root.render(element);    
+    </script>
+```
+We can even add more complicated HTML
+```js
+        const element = (
+          <div>
+          <h1>Hello, world</h1>
+          <h2>Goodbye, world</h2>
+          </div>
+        )
+```
+## Rendering
+Elements are the smallest building block of a react page.
+
+Applications built with just React usually have a single root DOM node. If you are integrating React into an existing app, you may have many isolated root DOM nodes.
+
+React compares the element and its children to the previous one, and only changes the parts of the DOM that need to be updated.
+
+```js
+<script type="text/babel">
+const root = ReactDOM.createRoot(
+  document.getElementById('root')
+);
+
+function tick() {
+  const element = (
+    <div>
+      <h1>Time of Day</h1>
+      <h2>It is {new Date().toLocaleTimeString()}.</h2>
+    </div>
+  );
+  root.render(element);
+}
+setInterval(tick, 1000);
+</script>
+```
+
+This will render the HTML with the id root, and only root. No other HTML will be affected.
+
+## Components
+Components let you split UI into independent reusable pieces, and think about each piece in isolation.
+
+Components are like JavaScript Functions. They accept arbitrary inputs (called "props") and return React elemetns describing what should appear in the DOM
+
+The simplest way to define a component:
+
+```js
+function Welcome(props) {
+  return <h1>Hello, {props.name}</h1>;
+}
+```
+* This function is a valid React component because ti accepts a single "props" (short for properties) object argument with data and returns a React element. These are called function components
+
+You can also use an [ES6](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes) class to define a component
+```js
+class Welcome extends React.Component {
+  render() {
+    return <h1>Hello, {this.props.name}</h1>;
+  }
+}
+```
+* These two components are equivalent according to React's POV
+
+Just like HTML, Components in React also have properties that modify their rendering.
+
+```js
+  <script type="text/babel">  
+  function Welcome(props) {
+    return <h1>Hello, {props.name}</h1>;
+  }
+
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  const element = <Welcome name="Sara" />;
+  root.render(element);
+</script>
+```
+
+### Composing Components
+
+You can also create a component that uses other components to create more complex stuff.
+
+```js
+  <script type="text/babel">  
+  function Welcome(props) {
+    return <h1>Hello, {props.name}</h1>;
+  }
+  function App() {
+    return (
+      <div>
+        <Welcome name="Sara" />
+        <Welcome name="Cahal" />
+        <Welcome name="Edite" />
+      </div>
+    );
+  }
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(<App />);
+  </script>
+```
+* Here you can see the Welcome component is used several times.
+
+## Events
+
+Handling events in React is very similar to Javascript except React Events are named using camelCase, rather than lowercase and you pass a function as the event handler, rather than a string
+
+HTML:
+```html
+<button onclick="activateLasers()">
+  Activate Lasers
+</button>
+```
+
+React:
+```html
+<button onClick={activateLasers}>
+  Activate Lasers
+</button>
+```
+
+You must also call "preventDefault()" on the event to keep the default behavior from happening.
+```js
+function Form() {
+  function handleSubmit(e) {
+    e.preventDefault();
+    alert('You clicked submit.');
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+At times you will want to maintain state between events. A good way to do this is to create an object.
+* `this` is used to access object data. The `state` object has the `isToggleOn` variable that determines if the button should display "ON" or "OFF".
+
+```js
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {isToggleOn: true};
+
+    // This binding is necessary to make `this` work in the callback
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState(prevState => ({
+      isToggleOn: !prevState.isToggleOn
+    }));
+  }
+
+  render() {
+    return (
+      <button onClick={this.handleClick}>
+        {this.state.isToggleOn ? 'ON' : 'OFF'}
+      </button>
+    );
+  }
+}
+```
+* A button that switches from on to off when you click it.
+
+## Conditional Rendering
+
+We can use properties to conditionalize rendering:
+
+```js
+<body>
+    <div id="root"></div>
+    <script type="text/babel">  
+    
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<Greeting isLoggedIn={true}/>);
+    </script>
+  </body>
+```
+
+```js
+      function Greeting(props) {
+        const isLoggedIn = props.isLoggedIn;
+        if (isLoggedIn) {
+          return <h1>Welcome back!</h1>;
+        }
+        return <h1>Please sign up.</h1>;
+      }
+```
+
+And we can create a full fledged object that uses this. 
+
+```js
+function LoginButton(props) {
+  return (
+    <button onClick={props.onClick}>
+      Login
+    </button>
+  );
+}
+
+function LogoutButton(props) {
+  return (
+    <button onClick={props.onClick}>
+      Logout
+    </button>
+  );
+}
+
+class LoginControl extends React.Component {
+constructor(props) {
+  super(props);
+  this.handleLoginClick = this.handleLoginClick.bind(this);
+  this.handleLogoutClick = this.handleLogoutClick.bind(this);
+  this.state = {isLoggedIn: false};
+}
+
+handleLoginClick() {
+  this.setState({isLoggedIn: true});
+}
+
+handleLogoutClick() {
+  this.setState({isLoggedIn: false});
+}
+
+render() {
+  const isLoggedIn = this.state.isLoggedIn;
+  let button;
+  if (isLoggedIn) {
+    button = <LogoutButton onClick={this.handleLogoutClick} />;
+  } else {
+    button = <LoginButton onClick={this.handleLoginClick} />;
+  }
+
+  return (
+    <div>
+      <Greeting isLoggedIn={isLoggedIn} />
+      {button}
+    </div>
+  );
+}
+}
+```
+* Notice how this class when it renders other components, it can assign properties onto them by how we defined them, which call our own functions in the class.
+
+## Lists
+
+Displaying lists in React uses the "map" function in JavaScript.
+```js
+function Numbers() { 
+  const numbers = [1, 2, 3, 4, 5];
+  const listItems = numbers.map((number) =>
+    <li>{number}</li>
+  );
+  return(<ul>{listItems}</ul>)
+}
+```
+
+## Forms
+```<input>```, ```<textarea>```, and ```<select>``` typically maintain their own state and update it based on user input. In React, mutable state is typically kept in the state property of components, and only updated with ```setState()```.
+
+We can combine the two and make the React state be the source of truth. The React component that renders a form also controls what happens in that form on subsequent user input. An input form element who value is controlled by React in this way is called a **"controlled component"**
+
+```js
+function NameForm() {
+  const [state, setState] = React.useState('');
+
+  function handleChange(event) {
+    setState(event.target.value);
+  }
+
+  function handleSubmit(event) {
+    alert('A name was submitted: ' + state);
+    event.preventDefault();
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Name:
+        <input type="text" value={state} onChange={handleChange} />
+      </label>
+      <input type="submit" value="Submit" />
+    </form>
+  );
+}
+```
+* Notice that the `value` saved in `event.target.value` is used in the value field of the form.
+
+## React-APIs
+We can use fetch requests as normal. We just have to make sure we manage the promises that result.
+
+```js
+handleChange(event) {
+        this.setState({value: event.target.value});
+        var url = "https://csonline.fhtl.org?q=" + event.target.value;
+        console.log("URL " + url);
+        fetch(url)
+          .then((data) => {
+            return (data.json());
+          })
+          .then((citylist) => {
+            console.log("CityList");
+            console.log(citylist);
+            this.setState({cities:citylist})
+            console.log(this.state.cities);
+          });
+      }
+```
+
+# React
+React was created by Jordan Walke for use at Facebook in 2011. It ws first used with Facebook's news feed and then as the main framework for Instagram. Shortly thereafter, Facebook open sourced the framework and it was quickly adopted by many popular web apps.
+
+React abstracts HTML into a JavaScript variant called JSX. JSX is converted into valid HTML and JavaScript using a preprocessor called Babel. For example, the following is a JSX file. Notice that it mixes both HTML and JavaScript into a single representation.
+
+```js
+const i = 3;
+const list = (
+  <ol class='big'>
+    <li>Item {i}</li>
+    <li>Item {3 + i}</li>
+  </ol>
+);
+```
+
+Babel will convert that into valid JavaScript:
+```js
+const i = 3;
+const list = React.createElement(
+  'ol',
+  { class: 'big' },
+  React.createElement('li', null, 'Item ', i),
+  React.createElement('li', null, 'Item ', 3 + i)
+);
+```
+
+The React.createElement function will then generate DOM elements and monitor the data they represent for changes. When a change is discovered, React will trigger dependent changes.
+
+## Components cont.
+React components allow you to modularize the functionality of your application.
+
+### The Render Function
+One primary purpose of a component is to generate the user interface. This is done with the component's `render` function. Whatever is returned from the `render` function is inserted into the component HTML element.
+
+A JSX file containing a React component name `Demo` would cause React to load teh `Demo` component, call the `render` function, and insert the result into the place of the `Demo` Element
+
+```html
+<div>
+  Component: <Demo />
+</div>
+```
+* Notice that `Demo` is not a valid HTML element. The transpiler will replace this tag with the resulting rendered HTML
+
+**React Component**
+```js
+function Demo() {
+  const who = 'world';
+  return <b>Hello {who}</b>;
+}
+```
+
+**Resulting HTML**
+```html
+<div>Component: <b>Hello world</b></div>
+```
+
+### Properties
+
+React components also allow you to pass information to them in the form of element properties. The component receives the properties in its constructor and then can display them when it renders.
+
+JSX
+```js
+<div>Component: <Demo who="Walke" /><div>
+```
+
+React Component
+```js
+function Demo(props) {
+  return <b>Hello {props.who}</b>;
+}
+```
+
+Resulting HTML
+```html
+<div>Component: <b>Hello Walke</b></div>
+```
+
+### State
+
+In addition to properties, a component can have internal state. Component state is created by calling the `React.useState` hook function. The `useState` function returns a variable that contains the current state and a function to update the state. 
+
+The following example creates a state variable called `clicked` and toggles the click state in the `updateClicked` function that gets called when the paragraph text is clicked.
+
+```js
+const Clicker = () => {
+  const [clicked, updateClicked] = React.useState(false);
+
+  const onClicked = (e) => {
+    updateClicked(!clicked);
+  };
+
+  return <p onClick={(e) => onClicked(e)}>clicked: {`${clicked}`}</p>;
+};
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Clicker />);
+```
+
+You can use JSX without a function. Variable representing JSX will work anyplace you would provide a component.
+
+```js
+const hello = <div>Hello</div>;
+
+ReactDOM.render(hello, document.getElementById('root'));
+```
+
+### Class style components
+
+In addition to the function style components, you can also use a class to style your components. **However,** The React team is moving away from the class style representation, so it's probably not recommended to use it, but you should be aware of it.
+
+Major difference is properties are loaded on the constructor and sstate is set using a `setState` function on the component object.
+
+```js
+class Clicker extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      clicked: false,
+    };
+  }
+  onClicked() {
+    this.setState({
+      clicked: !this.state.clicked,
+    });
+  }
+  render() {
+    return <p onClick={(e) => this.onClicked(e)}>clicked: {`${this.state.clicked}`}</p>;
+  }
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Clicker />);
+```
+
+### Reactivity
+
+A components properties and states are used by the React framework to determine the reactivity of the interface. Reactivity controls how a component reacts to actions take by the user or evetns that happen within the application. Whenever a component's state or properties change, the render function for the component and all of its dependent component render functions are called.
