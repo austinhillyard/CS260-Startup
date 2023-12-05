@@ -4336,3 +4336,370 @@ root.render(<Clicker />);
 ### Reactivity
 
 A components properties and states are used by the React framework to determine the reactivity of the interface. Reactivity controls how a component reacts to actions take by the user or evetns that happen within the application. Whenever a component's state or properties change, the render function for the component and all of its dependent component render functions are called.
+
+## Toolchains
+
+Web programming is complex, so it is useful to abstract away some of the complexity with some tools.
+* Code repository - Stores code in a shared, versioned, location.
+* Linter - Removes, or warns, of not-idomatic code usage
+* Prettier - Formats code according to a shared standard
+* Transpiler - Compiles code into a different format. For example, from JSX to JavaScript, TypeScript to JavaScript, or SCSS to CSS.
+* Polyfill - Generates backward compatible code for supporting old browser versions that do not support the latest standards.
+* Bundler - Packages code into bundles for delivery to the browser. This enable compatibility (for example with ES6 module support), or performance (with lazy loading).
+* Minifier - Removes whitespace and renames variables in order to make code smaller and more efficient to deploy.
+* Testing - Automated tests as multiple levels to ensure correctness.
+* Deployment - Automated packagin and delivery of code from the development envrionment ot the production environment.
+
+In our case, Our tool chain for our React project is as follows:
+* GitHub as the code repository
+* Vite for JSX, TS, development and debugging support
+* ESBuild for converting to ES6 modules and transpiling (with Babel underneath)
+* Rollup for bundling and tree shaking
+* PostCSS for CSS transpiling
+* Simple bash script for deployment
+
+## React tic-tac-toe Tutorial
+
+[Tic-tac-toe tutorial](https://react.dev/learn/tutorial-tic-tac-toe)
+
+### Components
+
+A component is a reusable piece of code that represents part of the user interface.
+
+The `return` line of a component returns some JSX that is a mixture of JavaScript and HTML
+
+React components need to return a single JSX element and not multiple adjacent JSX elements.
+
+BAD:
+```js
+export default function Square() {
+  return <button className="square">X</button><button className="square">X</button>;
+}
+```
+
+GOOD:
+```js
+export default function Square() {
+  return (
+    <>
+      <button className="square">X</button>
+      <button className="square">X</button>
+    </>
+  );
+}
+```
+
+### Props
+Props are values the component can pass to its parent.
+
+Parents are define in {} in the function
+```js
+function Square({ value }) {
+  return <button className="square">{value}</button>;
+}
+```
+  * The prop can then be referenced using the {} as a escape operator.
+
+Then the prop can be passed in through HTML properties
+
+```js
+<div className="board-row">
+  <Square value="1" />
+  <Square value="2" />
+  <Square value="3" />
+</div>
+```
+
+You can add functions to component functions. These functions can act as handlers for events and can be called by adding the function name to the props of the component piece
+
+```js
+function Square({ value }) {
+  function handleClick() {
+    console.log("clicked");
+  }
+
+  return (
+    <button className="square" onClick={handleClick}>
+      {value}
+    </button>
+  );
+}
+```
+
+### States
+Components use states to remember things.
+
+React uses and provides a function called `useState` from your component to let it remember things which you need to import
+```js
+import { useState } from "react";
+```
+
+Now we can set a state variable in our component. The `value` is the name of the state. `setValue` is a function used to change state, and the `null` in the `useState` is used as an initial value for the state in this case.
+```js
+function Square({ value }) {
+  const [value, setValue] = useState(null);
+  ...
+}
+```
+
+Now we can call `setValue` in things like our handlers!
+```js
+  function handleClick() {
+    setValue('X');
+  }
+```
+
+By clicking the components, and activating the handler, you're telling React to re-render that component whenever its `<button>` is clicked.
+
+### Dev Tools.
+React DevTools let you check the props and state of your React components.
+
+### State knowledge
+**We could communicate state to another component, but it is usually best practice to store state in a parent element if the parent needs access to it, or if two children need access to each other's states.**
+
+**This way the children and parent will stay in sync with each other, reducing errors and bugs**
+
+State can be passed as a prop to children pretty easily:
+
+```js
+function Square({ value }) {
+  return <button className="square">{value}</button>;
+}
+
+export default function Board() {
+  const [squares, setSquares] = useState(Array(9).fill(null));
+
+  return (
+    <>
+      <div className="board-row">
+        <Square value={squares[0]} />
+        <Square value={squares[1]} />
+        <Square value={squares[2]} />
+      </div>
+  ...)
+}
+```
+
+Since State is private, to update it from the children, we can pass a function through props.
+
+```js
+function Square({ value, onSquareClick }) {
+  return (
+    <button className="square" onClick={onSquareClick}>
+      {value}
+    </button>
+  );
+}
+```
+
+Then we specify the handler for the props to reference in the parent
+
+```js
+export default function Board() {
+  const [squares, setSquares] = useState(Array(9).fill(null));
+
+  function handleClick() {
+    const nextSquares = squares.slice();
+    nextSquares[0] = "X";
+    setSquares(nextSquares);
+  }
+
+  return (
+    <>
+      <div className="board-row">
+        <Square value={squares[0]} onSquareClick={handleClick} />
+  ...)
+}
+```
+
+The `handleClick()` function makes a copy of the array and changes the index in the array to be an X. It also calls the set Squares function and that lets React know that the state of the component has changed and needs to be updated.
+
+### Note Closure
+JavaScript allows us to access variables inside a function if it part of the same parent as the variable it is trying to access.
+
+### Re-Render loops
+The way our code is set up, the click is not actually calling the function, the function is just running automatically `onSquareClick={handleClick(0)}` which is causing an infinitely loop because the board is continually being re-rendering by being changed.
+
+```js
+  function handleClick(i) {
+    const nextSquares = squares.slice();
+    nextSquares[i] = "X";
+    setSquares(nextSquares);
+  }
+
+  return (
+    <>
+      <div className="board-row">
+        <Square value={squares[0]} onSquareClick={handleClick(0)} />
+```
+If we use an `() =>` arrow function however, that causes the function to only run WHEN it is clicked.
+
+```js
+  <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
+```
+
+Let's recap what we've done:
+
+1. Clicking on the upper left square runs the function that the `button` received as its `onClick` prop from the `Square`. The `Square` component received that function as its `onSquareClick` prop from the `Board`. The Board component defined that function directly in the JSX. It calls `handleClick` with an argument of 0.
+1. `handleClick` uses the argument (`0`) to update the first element of the squares array from `null` to `X`.
+1. The `squares` state of the `Board` component was updated, so the Board and all of its children re-render. This causes the `value` prop of the `Square` component with index `0` to change from `null` to `X`.
+
+### Note "onclick"
+The DOM `<button>`'s attribute `onClick` is a built-in component that has a special meaning to React.
+
+### Importance of Imutability
+If we directly change some data, that essentially erases that copy of the data. If we instead create a copy, modify it, and replace the original with it, we have achieved the same thing but now have the benefit of storing old data which we could go back to after an "undo".
+
+There is another benefit. By default, child components re-render when it's parent component is directly changed. For performance reasons, immutability is better because React can easily compare a reassignment and skip a re-rendering if no data was changed, saving performance.
+
+### Taking Turns
+We can track if X gets to go next with another state.
+
+```js
+export default function Board() {
+  const [xIsNext, setXIsNext] = useState(true);
+  const [squares, setSquares] = useState(Array(9).fill(null));
+
+  function handleClick(i) {
+    const nextSquares = squares.slice();
+    if (xIsNext) {
+      nextSquares[i] = "X";
+    } else {
+      nextSquares[i] = "O";
+    }
+    setSquares(nextSquares);
+    setXIsNext(!xIsNext);
+  }
+```
+* We can flip the boolean tracking turns after each turn, and use an if statement to get the right input.
+
+But the players can override a previous move. We don't want that
+
+```js
+function handleClick(i) {
+  if (squares[i]) {
+    return;
+  }
+  const nextSquares = squares.slice();
+  ...
+```
+With this check, we can just skip adding an input, if there is already something in the spot of the array that is not `null`.
+
+We just use a basic winner test function to see if the game should end early. Nothing specific to react.
+
+To let the players know who won, or who is next, we can have a status message in our Board component
+
+```js
+  const winner = calculateWinner(squares);
+  let status;
+  if (winner) {
+    status = "Winner: " + winner;
+  }
+  else {
+    status = "Next player: " + (xIsNext ? "X" : "O");
+  }
+  return (
+  <>
+    <div className="status">{status}</div>
+  ...
+```
+Since the board component is rerendered anytime there is an update, this text will update accordingly, and it doesn't even need a function!
+
+### Adding History
+We can store our old `squares` in another array, which will be a state.
+
+We will create a new component `Game`, and we will lift state up again, to be stored in the `Game` component.
+
+```js
+export default function Game() {
+  const [xIsNext, setXIsNext] = useState(true);
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const currentSquares = history[history.length - 1];
+```
+
+Notice how `currentSquares` does not use the `useState` function. We don't need to track it in state for the game to work. The history state should keep track of everything we need.
+
+Next we make the board run off of props instead of states.
+```js
+function Board({ xIsNext, squares, onPlay}) {
+  function handleClick(i) {
+...
+
+<Board xIsNext={xIsNext} square={currentSquares} onPlay={handlePlay} />
+```
+
+We then replace our previous state modifying calls in `Board` with the prop from `Game`, which will handle the state changes for us.
+
+Then our handlePlay function will take care of those state changes
+```js
+function handlePlay(nextSquares) {
+    setHistory([..history, nextSquares]);
+    setXIsNext(!xIsNext);
+}
+```
+* `[...history, nextSquares]` Enumerates all of the items in `history`and inserts them into a new array, folloed by `nextSquares` which is another array.
+
+We can create buttons that have the move history by mapping the history to a `moves` array.
+
+```js
+const moves = history.map((squares, move) => {
+    let description;
+    if (move > 0) {
+      description = 'Go to move #' + move;
+    }
+    else {
+      description = 'Go to game start';
+    }
+    return (
+      <li>
+        <button onClick={() => jumpTo(move)}>{description}</button>
+      </li>
+    )
+  });
+```
+
+### 🔑 <u>**Keys and Lists**</u>
+React needs to keep track of list items with Keys so it can know what happened when it is updated. If the key for a `<li>` doesn't exist, react will remove the component and just generate a new component. If the key does exist, then React will move the component, and remember the state of that component.
+
+`key` is a special reserved property in react, and is not passed in props, even though it looks like it.
+
+The key should be a good identifier, and not something simple like the position in the list, as that will get mixed up very quickly. Representing the moves in a game is still a number, but it accurately describes the list item.
+
+```js
+<li key={move}>
+  <button onClick={() => jumpTo(move)}>{description}</button>
+</li>
+```
+
+Keys do not need to be globally unique, they only need to be unique between components and their siblings.
+
+
+### Adding Time travel
+We then implement our jumpTo function, which will require adding another state to keep track of the current move.
+
+```js
+export default function Game() {
+  const [xIsNext, setXIsNext] = useState(true);
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const currentSquares = history[currentMove];
+
+  function handlePlay(nextSquares) {
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    setHistory(nextHistory);
+    setCurrentMove(nextHistory.length - 1);
+    setXIsNext(!xIsNext);
+  }
+
+  function jumpTo(nextMove) {
+    setCurrentMove(nextMove);
+    setXIsNext(nextMove % 2 === 0);
+  }
+  ... 
+}
+```
+* We also changed the handlePlay function to modify the history and remove the old future moves after a move is made, and set the current move back.
+* `currentSquares` is also now set to the current move, rather than just the latest element in `history`
+
+### Cleanup / Good habits
+You should try to remove reduntant states when possible. It makes your code easier to understand and reduces bugs.
