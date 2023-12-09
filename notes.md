@@ -546,6 +546,36 @@ p.summary {
 }
 ```
 
+HTML Elements can have multiple classes separated by spaces, and you can refer to them individually
+
+```html
+<div className="home comp">Home Component</div>
+<div className="scores comp">Scores Component</div>
+```
+```css
+.comp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: thick dashed black;
+  border-radius: 15px;
+  margin: 1em;
+  padding: 2em;
+  font-size: 26px;
+}
+
+.home {
+  border-color: #4f4;
+  background-color: #dfd;
+}
+
+.users {
+  border-color: #f44;
+  background-color: #fdd;
+}
+```
+This way you can have a general class and any specific class for a general style and a specific style that can still apply to more than one element unlike ID selectors.
+
 ### ID Selectors
 Reference the ID of an element. Ideally HTML IDs are unique so the specification can be specific.
 ```css
@@ -4703,3 +4733,207 @@ export default function Game() {
 
 ### Cleanup / Good habits
 You should try to remove reduntant states when possible. It makes your code easier to understand and reduces bugs.
+
+## Reactivity
+
+Making the UI react to changes in user input or data, is one of the architectural foundations of React. Theis is achieved through three major pieces of components
+* `props`
+* `state`
+* `render`
+
+When a component is rendered, React parses the JSX and creates a list of any references to the component's `state` or `prop` objects. React then monitors those objects and if it detects that they have changed it will call the component's render function so that the impact of the change is visualized.
+
+**States are updated asynchronously**, so you can't access state on the next line of code. Eventually the change in state will happen.
+
+This example has two components in a parent child relationship. `Survey` has the state `color` and `Questions` has the `prop` `color`, which is passed in by `Survey`.
+`Question` also has the state `answer`, which is displayed as part of the content.
+
+```js
+// The Survey component
+const Survey = () => {
+  const [color, updateColor] = React.useState('#737AB0');
+
+  // When the color changes update the state
+  const onChange = (e) => {
+    updateColor(e.target.value);
+  };
+  return (
+    <div>
+      <h1>Survey</h1>
+      {/* Pass the Survey color state as a property to the Question.
+          When the color changes the Question property will also be updated and rendered. */}
+      <Question color={color} />
+
+      <p>
+        <span>Pick a color: </span>
+        {/* Pass the Survey color state as a property to the input element.
+            When the color changes, the input property will also be updated and rendered. */}
+        <input type='color' onChange={(e) => onChange(e)} value={color} />
+      </p>
+    </div>
+  );
+};
+
+// The Question component
+const Question = ({ color }) => {
+  const [answer, updateAnswer] = React.useState('pending...');
+
+  function onChange({ target }) {
+    updateAnswer(target.value);
+  }
+
+  return (
+    <div>
+      <span>Do you like this</span>
+      {/* Color rerendered whenever the property changes */}
+      <span style={{ color: color }}> color</span>?
+      <label>
+        <input type='radio' name='answer' value='yes' onChange={(e) => onChange(e)} />
+        Yes
+      </label>
+      <label>
+        <input type='radio' name='answer' value='no' onChange={(e) => onChange(e)} />
+        No
+      </label>
+      {/* Answer rerendered whenever the state changes */}
+      <p>Your answer: {answer}</p>
+    </div>
+  );
+};
+
+ReactDOM.render(<Survey />, document.getElementById('root'));
+```
+
+## React Hooks
+React hooks allow React function style components to be able to do eeverything that a class style component can do and more. New features in React are also implemented using Hooks.
+
+ Function styles are the preferred way to use React these days.
+
+ `React.useState` is a hook we have already used, and there are others as well.
+
+### `React.useEffect()`
+The `useEffect` hook allows you to represent lifecycle events. Basically if the component is ever rerendered this hook runs
+```js
+function UseEffectHookDemo() {
+  const [count, updateCount] = React.useState(0);
+  React.useEffect(() => {
+    console.log('rendered');
+
+    return function cleanup() {
+      console.log('cleanup');
+    };
+  });
+
+  return <div onClick={() => updateCount(count + 1)}>useEffectExample {count}</div>;
+}
+
+ReactDOM.render(<UseEffectHookDemo />, document.getElementById('root'));
+```
+
+### Hook Dependencies
+You can control what triggers `useEffect` hook by specifying its dependencies. In the following example we have two state variables, but we only want the `useEffect` hook to be called when the component is initially called and when the first variable is clicked. To accomplish this you pass an array of dependencies as a second parameter to the `useEffect` call.
+
+```js
+function UseEffectHookDemo() {
+  const [count1, updateCount1] = React.useState(0);
+  const [count2, updateCount2] = React.useState(0);
+
+  React.useEffect(() => {
+    console.log(`count1 effect triggered ${count1}`);
+  }, [count1]);
+
+  return (
+    <ol>
+      <li onClick={() => updateCount1(count1 + 1)}>Item 1 - {count1}</li>
+      <li onClick={() => updateCount2(count2 + 1)}>Item 2 - {count2}</li>
+    </ol>
+  );
+}
+
+ReactDOM.render(<UseEffectHookDemo />, document.getElementById('root'));
+```
+* If you specify an empty array as the hook dependency, then it is only rendered the first time the component is rendered.
+
+**NOTE**: Hooks can only be used in function style components and call only be called in the top scope of the function, so not inside loops or conditionals.
+
+## Router
+A web framework router provides essential functionality for single page applications. With a multiple-webpage application the headers, footers, navigation, and common components must be either duplicated in each THML page, or injected before the server sends the page to the browser. With a single page application, the browser only loads on HTML page and then JavaScript is used to manipulate the DOM and give it the appearnce of multiple pages. The router defines the routes a user can take through the application and automatically manipulates the DOM to display the appropriate framework components.
+
+React does not have a standard router package, and there are many options. We will us [react-router-dom](https://www.npmjs.com/package/react-router-dom) Version 6. The simplified routing functionality of React-router-dom derives from the project [react-router](https://www.npmjs.com/package/react-router) for its core functionality. Be sure not to confuse the two.
+
+A basic router consists of a `BrowserRouter` component that encapuslates the entire application and controls the routing action. The `Link` or `NavLink`, component captures user navigation events and modifies what is rendered by the `Routes` component by matching up the `to` and `path` attributes.
+
+```js
+// Inject the router into the application root DOM element
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  // BrowserRouter component that controls what is rendered
+  // NavLink component captures user navigation requests
+  // Routes component defines what component is routed to
+  <BrowserRouter>
+    <div className='app'>
+      <nav>
+        <NavLink to='/'>Home</Link>
+        <NavLink to='/about'>About</Link>
+        <NavLink to='/users'>Users</Link>
+      </nav>
+
+      <main>
+        <Routes>
+          <Route path='/' element={<Home />} exact />
+          <Route path='/about' element={<About />} />
+          <Route path='/users' element={<Users />} />
+          <Route path='*' element={<Navigate to='/' replace />} />
+        </Routes>
+      </main>
+    </div>
+  </BrowserRouter>
+);
+```
+
+## Vite
+We need a framework that allows us to use JSX, minification, polyfills, and bundling. We can use a CLI to setup our web app using a toolchain.
+
+Vite is our toolchain of choice. Vite bundles our code quickly, has debugging support, allows JSX, TypeScript, and different CSS flavors support.
+
+To create a new React-based web application, run the following commands:
+```bash
+npm create vite@latest demoVite -- --template react
+cd demoVite
+npm install
+npm run dev
+```
+
+`npm run dev` will host the application in your browser. You can quit by pressing `q`.
+
+This created some files for us already. the main files are `index.html`, `main.jsx`, and `app.jsx`.
+
+The browser loads `index.html` which has the `#root` element which is loaded by `main.jsx` that creates an App component, and the functionality is found in `App.jsx`. 
+
+![Alt text](image-1.png)
+
+### JSX vs. JS
+The `Vite` CLI uses the `.jsx` extension for JSX files instead of the JavaScript `.js` extension. The Babel transpiler will work with either one, but some editor tools will worko different based upon the extension. For this reason, you should prefer `.jsx` for files that contain JSX.
+
+### Building a production release
+When you execute `npm run dev` you are bundling the code to a temporary directory that the Vite debug HTTP server loads from. When you want to bundle your application so that you deploy to a production environment you need to run `npm run build`. This executes the `build` script found in your `package.json` and invokes the `Vite` CLI. `vite build` transpiles, minifies, injects the proper JavaScript, and then outpus everything to a deployment ready version contained in a distribution subdirectory names `dist`.
+
+```bash
+➜  npm run build
+
+> demovite@0.0.0 build
+> vite build
+
+vite v4.3.7 building for production...
+✓ 34 modules transformed.
+dist/index.html                   0.45 kB │ gzip:  0.30 kB
+dist/assets/react-35ef61ed.svg    4.13 kB │ gzip:  2.14 kB
+dist/assets/index-51439b3f.css    1.42 kB │ gzip:  0.74 kB
+dist/assets/index-58d24859.js   143.42 kB │ gzip: 46.13 kB
+✓ built in 382ms
+```
+As you can see, Vite has created a new `.js`, `.css`, and `.html` file that created new HTML and JavaScript that represents the React functionality. It's kind of like compiling, but the correct term is transpiling, one language into another language, rather than machine code.
+
+### Deploying a Production Release
+The deployment script `deployReact.sh` creates a production distribution by calling `npm run build` and then copying the resulting `dist` directory to your production server.
+
