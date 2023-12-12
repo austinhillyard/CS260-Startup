@@ -5021,3 +5021,79 @@ root.render(<App />);
 * This hooks our index html with our `App` component.
 
 Then we create our `App`!
+
+First we create our navbar and our Link Items.
+
+```jsx
+import React from 'react';
+import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { Login } from './login/login';
+import { Tracker } from './tracker/tracker';
+import { Sharer } from './sharer/sharer';
+import { Import } from './import/import';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './app.css';
+
+export default function App() {
+  return (
+    <BrowserRouter>
+        <div className='body bg-dark text-light'>
+            <header className='container-fluid'>
+                <nav className='navbar fixed-top navbar-dark'>
+                    <div className='navbar-brand'>
+                    Game Tracker
+                    </div>
+                    <menu className='navbar-nav'>
+                        <li className='nav-item'>
+                            <NavLink className="nav-link" to="">
+                                Login
+                            </NavLink>
+                        </li>
+                        <li className='nav-item'>
+                            <NavLink className="nav-link" to="tracker">
+                                Tracker
+                            </NavLink>
+                        </li>
+                        <li className='nav-item'>
+                            <NavLink className="nav-link" to="import">
+                                Import
+                            </NavLink>
+                        </li>
+                        <li className='nav-item'>
+                            <NavLink className="nav-link" to="sharer">
+                                Sharer
+                            </NavLink>
+                        </li>
+                    </menu>
+                </nav>
+            </header>
+```
+
+### Routing
+Then we need to route the items to the correct components
+
+This makes it actually populate the click with a new component
+
+```jsx
+<Routes>
+    <Route path='/' element={<Login />} exact />
+    <Route path='/tracker' element={<Tracker />} />
+    <Route path='/import' element={<Import />} />
+    <Route path='/sharer' element={<Sharer />} />
+    <Route path='*' element={<NotFound />} />
+</Routes>
+```
+
+### Converting Components
+
+The basic process for converting original html and JS to a component is as follows:
+- Copy the `main` element HTML over and put it in the return value of the component. Don't copy the header and footer HTML since they are now represented in `app.jsx`.
+- Rename the `class` to `className` so that it doesn't conflict with the JavaScript keyword `class`.
+- Copy the JavaScript over and turn the functions into inner functions of the React component.
+- Move the CSS over to the component directory and use an `import` statement to bring it into the component's `jsx` file.
+- Create React state variables for each of the stateful objects in the component.
+- Replace DOM query selectors with React state variables.
+- Move state up to parent components as necessary. For example, authentication state, or user name state.
+- Create child components as necessary. For example, a `SimonGame` and `SimonButton` component.
+
+

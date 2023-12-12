@@ -1,0 +1,49 @@
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+#import {
+    background-color: #502793;
+    border-color: #44188d;
+    height: fit-content;
+}
+
+#import:hover {
+    background-color: #5e549d;
+}
+
+#profilelink {
+    background-color: #212b37;
+    color: aliceblue;
+    border: none;
+}
+
+#input {
+    background-color: #17202A;
+    color: aliceblue;
+    border: none;
+    width: fit-content;
+}
+
+#input::placeholder {
+    color: rgb(113, 113, 113);
+}
+
+#form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: inherit;
+    max-width: 80%;
+}
+
+p {
+    font-size: larger;
+}
+
+main * {
+    padding: 1em;
+}
+

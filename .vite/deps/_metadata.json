@@ -1,0 +1,56 @@
+{
+  "hash": "ff99c28e",
+  "browserHash": "73382a0f",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "6d1de224",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "8f908246",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "d6ba3ec2",
+      "needsInterop": false
+    },
+    "react-bootstrap/Button": {
+      "src": "../../node_modules/react-bootstrap/esm/Button.js",
+      "file": "react-bootstrap_Button.js",
+      "fileHash": "d087caa0",
+      "needsInterop": false
+    },
+    "react-bootstrap/Form": {
+      "src": "../../node_modules/react-bootstrap/esm/Form.js",
+      "file": "react-bootstrap_Form.js",
+      "fileHash": "9c7241f4",
+      "needsInterop": false
+    },
+    "react-bootstrap/InputGroup": {
+      "src": "../../node_modules/react-bootstrap/esm/InputGroup.js",
+      "file": "react-bootstrap_InputGroup.js",
+      "fileHash": "940c1052",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-KLVZQIAJ": {
+      "file": "chunk-KLVZQIAJ.js"
+    },
+    "chunk-AP4YD6IG": {
+      "file": "chunk-AP4YD6IG.js"
+    },
+    "chunk-UWZXFKA6": {
+      "file": "chunk-UWZXFKA6.js"
+    },
+    "chunk-UPDK7Z2H": {
+      "file": "chunk-UPDK7Z2H.js"
+    }
+  }
+}
