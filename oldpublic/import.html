@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <!-- Scale viewport according to Device-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link rel="stylesheet" href="import.css" />
+        <script src="import.js"></script>
+        <title>GameTracker | Import</title>
+    </head>
+    <body>
+        <header>
+            <!-- Header welcoming the user to the import page-->
+            <h1>Steam Import</h1>
+            <nav>
+                <!-- Menu area to navigate the user around to the different tools-->
+                <menu>
+                    <a href="tracker.html">Tracker</a>
+                    <a href="sharer.html">Sharer</a>
+                </menu>
+            </nav>
+        </header>
+        <main>
+            <!--Import Profile data form from steam. This will represent our real time communication and 3rd party steam API service. Has some pictures to help users have the right settings and data.
+            This will also link the specified profile to the user.-->
+            <h3>Instructions</h3>
+            <p>Enter the link to your steam profile below. You can find this on the app and website after clicking the Profile tab.</p>
+            <img src="/SteamProfileLink.png"/>
+            <form>
+                <lable for="profilelink">Profile Link</lable>
+                <input type="link" id="profilelink" size="60" placeholder="https://steamcommunity.com/profiles/steam_number_id_here/"></input>
+                <button id="import" type="submit" onclick="importGames()">Import</button>
+                <span><p>Make sure that your steam profile is public, and that your Game Details are public. If they are set to private game tracker cannot find your games and progress.</p></span>
+                <img src="/ProfilePublicSettings.png"/>
+            </form>
+        </main>
+        <footer>
+            <hr/>
+            <p>Author: Austin Hillyard</p>
+            <a href="https://github.com/austinhillyard/CS260-Startup/tree/main">GitHub</a>
+        </footer>
+    </body>
+    
+</html>
