@@ -35,6 +35,7 @@ main {
     display: flex;
     flex-direction: row;
     align-content: center;
+    background-color:#283747 !important;
 
 }
 

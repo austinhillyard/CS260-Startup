@@ -4937,3 +4937,163 @@ As you can see, Vite has created a new `.js`, `.css`, and `.html` file that crea
 ### Deploying a Production Release
 The deployment script `deployReact.sh` creates a production distribution by calling `npm run build` and then copying the resulting `dist` directory to your production server.
 
+## Converting to React
+
+We need to reorganize our code.
+* Service folder for backend
+* src folder for React content
+
+### Debugging
+When debugging we need two servers, one for vite and one for our backend. This allows viewing results while debugging and developing.
+* By default, vite uses port 5173 when running in dev mode.
+We can configure the Vite HTTP server to proxy service HTTP and WebSocket requests to the Node.js HTTP server by providing a configuration file named vite.config.js with the following contents.
+```js
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  server: {
+    proxy: {
+      '/api': 'http://localhost:3000',
+      '/ws': {
+        target: 'ws://localhost:3000',
+        ws: true,
+      },
+    },
+  },
+});
+```
+
+### Adding React Bootstrap
+React bootstrap wraps components in Bootrap CSS frameworks
+```bash
+npm install bootstrap react-bootstrap
+```
+```js
+import 'bootstrap/dist/css/bootstrap.min.css';
+```
+```js
+import Button from 'react-bootstrap/Button';
+
+export function NavButton({ text, url }) {
+  const navigate = useNavigate();
+  return (
+    <Button variant='primary' onClick={() => navigate({ url })}>
+      {text}
+    </Button>
+  );
+}
+```
+
+### Enabling React
+```bash
+npm install react react-dom react-router-dom
+```
+This gives us all of the necessary DOM functionality of React.
+
+Now we can replace our index.html file with something like this:
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>Simon React</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/index.jsx"></script>
+  </body>
+</html>
+```
+With a relavent JSX file:
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './src/app';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+```
+* This hooks our index html with our `App` component.
+
+Then we create our `App`!
+
+First we create our navbar and our Link Items.
+
+```jsx
+import React from 'react';
+import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { Login } from './login/login';
+import { Tracker } from './tracker/tracker';
+import { Sharer } from './sharer/sharer';
+import { Import } from './import/import';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './app.css';
+
+export default function App() {
+  return (
+    <BrowserRouter>
+        <div className='body bg-dark text-light'>
+            <header className='container-fluid'>
+                <nav className='navbar fixed-top navbar-dark'>
+                    <div className='navbar-brand'>
+                    Game Tracker
+                    </div>
+                    <menu className='navbar-nav'>
+                        <li className='nav-item'>
+                            <NavLink className="nav-link" to="">
+                                Login
+                            </NavLink>
+                        </li>
+                        <li className='nav-item'>
+                            <NavLink className="nav-link" to="tracker">
+                                Tracker
+                            </NavLink>
+                        </li>
+                        <li className='nav-item'>
+                            <NavLink className="nav-link" to="import">
+                                Import
+                            </NavLink>
+                        </li>
+                        <li className='nav-item'>
+                            <NavLink className="nav-link" to="sharer">
+                                Sharer
+                            </NavLink>
+                        </li>
+                    </menu>
+                </nav>
+            </header>
+```
+
+### Routing
+Then we need to route the items to the correct components
+
+This makes it actually populate the click with a new component
+
+```jsx
+<Routes>
+    <Route path='/' element={<Login />} exact />
+    <Route path='/tracker' element={<Tracker />} />
+    <Route path='/import' element={<Import />} />
+    <Route path='/sharer' element={<Sharer />} />
+    <Route path='*' element={<NotFound />} />
+</Routes>
+```
+
+### Converting Components
+
+The basic process for converting original html and JS to a component is as follows:
+- Copy the `main` element HTML over and put it in the return value of the component. Don't copy the header and footer HTML since they are now represented in `app.jsx`.
+- Rename the `class` to `className` so that it doesn't conflict with the JavaScript keyword `class`.
+- Copy the JavaScript over and turn the functions into inner functions of the React component.
+- Move the CSS over to the component directory and use an `import` statement to bring it into the component's `jsx` file.
+- Create React state variables for each of the stateful objects in the component.
+- Replace DOM query selectors with React state variables.
+- Move state up to parent components as necessary. For example, authentication state, or user name state.
+- Create child components as necessary. For example, a `SimonGame` and `SimonButton` component.
+
+

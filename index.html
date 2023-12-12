@@ -1,48 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-    <link rel="stylesheet" href="index.css" />
-    <head>
-        <meta charset="UTF-8" />
-        <!-- Scale viewport according to Device-->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script src="login.js"></script>
-        <title>GameTracker | Login</title>
-    </head>
-    <body>
-        <header>
-            <h2>Game Tracker</h2>
-        </header>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
 
-        <main>
-            <h2>Login</h2>
-            <p>Login or create an account</p>
-            <form method="get">
-                <!--Login and Create Account placeholder form for users.-->
-                <section class="fields">
-                    <div class="username">
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" placeholder="Enter Username" />
-                    </div>
-                    <div class="pass">
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" placeholder="Enter Password" />
-                    </div>
-                </section>
-                <!-- Login Option-->
-                <section class="buttons">
-                    <button id="loginButton" type="button" onclick="loginUser()">Login</button>
-                    <!-- Create Account Option-->
-                    <button id="createAccountButton" type="button" onclick="createUser()">Create Account</button>
-                </section>
-            </form>
-            
-        </main>
-
-        <footer>
-            <hr/>
-            <p>Author: Austin Hillyard</p>
-            <a href="https://github.com/austinhillyard/CS260-Startup/tree/main"><p>GitHub</p></a>
-        </footer>
-    </body>
-    
+    <title>Game Tracker</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/index.jsx"></script>
+  </body>
 </html>
