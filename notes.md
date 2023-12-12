@@ -4937,3 +4937,28 @@ As you can see, Vite has created a new `.js`, `.css`, and `.html` file that crea
 ### Deploying a Production Release
 The deployment script `deployReact.sh` creates a production distribution by calling `npm run build` and then copying the resulting `dist` directory to your production server.
 
+## Converting to React
+
+We need to reorganize our code.
+* Service folder for backend
+* src folder for React content
+
+### Debugging
+When debugging we need two servers, one for vite and one for our backend. This allows viewing results while debugging and developing.
+* By default, vite uses port 5173 when running in dev mode.
+We can configure the Vite HTTP server to proxy service HTTP and WebSocket requests to the Node.js HTTP server by providing a configuration file named vite.config.js with the following contents.
+```js
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  server: {
+    proxy: {
+      '/api': 'http://localhost:3000',
+      '/ws': {
+        target: 'ws://localhost:3000',
+        ws: true,
+      },
+    },
+  },
+});
+```
