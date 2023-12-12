@@ -12,7 +12,6 @@ https://developer.valvesoftware.com/wiki/Steam_Web_API#Game_interfaces_and_metho
 let steamID = "";
 
 async function importGames() {
-    event.preventDefault()
     //Get steam ID from text box
     getSteamID();
     console.log("Saving ID to user");

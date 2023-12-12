@@ -35,6 +35,8 @@ input {
     flex: 0 10px;
     background-color: #17202A;
     color: aliceblue;
+    border: none;
+    border-radius: 2%;
     
 }
 
