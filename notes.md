@@ -4962,3 +4962,62 @@ export default defineConfig({
   },
 });
 ```
+
+### Adding React Bootstrap
+React bootstrap wraps components in Bootrap CSS frameworks
+```bash
+npm install bootstrap react-bootstrap
+```
+```js
+import 'bootstrap/dist/css/bootstrap.min.css';
+```
+```js
+import Button from 'react-bootstrap/Button';
+
+export function NavButton({ text, url }) {
+  const navigate = useNavigate();
+  return (
+    <Button variant='primary' onClick={() => navigate({ url })}>
+      {text}
+    </Button>
+  );
+}
+```
+
+### Enabling React
+```bash
+npm install react react-dom react-router-dom
+```
+This gives us all of the necessary DOM functionality of React.
+
+Now we can replace our index.html file with something like this:
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>Simon React</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/index.jsx"></script>
+  </body>
+</html>
+```
+With a relavent JSX file:
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './src/app';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+```
+* This hooks our index html with our `App` component.
+
+Then we create our `App`!
