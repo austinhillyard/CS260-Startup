@@ -1,0 +1,14 @@
+.game {
+    border-radius: 5px;
+    background-color: rgb(76, 86, 97);
+    border: thick white;
+    margin: 0.5em;
+    height: 150px;
+    width: 100px;
+}
+
+.game * {
+    color: white;
+    text-wrap: normal;
+    font-size: small;
+}
