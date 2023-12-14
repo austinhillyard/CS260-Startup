@@ -11,7 +11,7 @@ main div {
     flex: 1;
     width: inherit;
     margin: .5em;
-    background-color: #17202A;
+    background-color: #17202A !important;
     border-radius: 6px;
     padding: .5em !important;
 }
@@ -27,7 +27,7 @@ main * {
 }
 
 .gamesTop button {
-    align-self: flex-end;
+    
 }
 
 button {

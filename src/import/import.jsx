@@ -27,7 +27,7 @@ export function Import() {
     <main className='container-fluid text-center'>
         <h3>Instructions</h3>
             <p>Enter the link to your Steam profile below. You can find this on the app and website after clicking the 'Profile' tab.</p>
-            <img src="public/SteamProfileLink.png"/>
+            <img src="./SteamProfileLink.png"/>
             <div id="form">
                 <InputGroup className="inputgroup">
                     <InputGroup.Text id="profilelink">Profile Link</InputGroup.Text>
@@ -42,7 +42,7 @@ export function Import() {
                 <Button variant="primary" id="import" type="button" onClick={handleClick}>Import</Button>
             </div>
             <span><p>Make sure that your steam profile is public, and that your Game Details are public. If they are set to private game tracker cannot find your games and progress.</p></span>
-            <img src="public/ProfilePublicSettings.png"/>
+            <img src="./ProfilePublicSettings.png"/>
     </main>
   );
 

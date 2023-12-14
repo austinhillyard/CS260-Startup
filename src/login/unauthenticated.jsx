@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button from 'react-bootstrap/Button';
 import {MessageDialog} from './messageDialog';
+import "./unauthenticated.css"
 
 export function Unauthenticated(props) {
   const [userName, setUserName] = React.useState(props.userName);
@@ -35,7 +36,7 @@ export function Unauthenticated(props) {
 
   return (
     <>
-      <div>
+      <div className='unauthenticated'>
         <div className='input-group mb-3'>
           <span className='input-group-text'>@</span>
           <input

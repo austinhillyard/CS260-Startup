@@ -15,3 +15,32 @@
 #login:active {
     background-color: #2d265a;
 }
+
+.login {
+    background-color: transparent !important;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.tracker {
+    background-color: #502793 !important;
+    border-color: #44188d !important;
+    height: fit-content;
+}
+
+.tracker:hover {
+    background-color: #5e549d !important;
+}
+
+div {
+    background-color: transparent !important;
+}
+
+.input-group {
+    padding: 1em;
+}
+
+.form-control {
+    padding: .5em;
+}

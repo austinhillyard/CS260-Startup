@@ -11,3 +11,12 @@
 #view {
     height: 100vh;
 }
+
+#view h2 {
+    height: 0px !important;
+    padding: 0% !important;
+}
+
+#view hr {
+    padding: 0% !important;
+}

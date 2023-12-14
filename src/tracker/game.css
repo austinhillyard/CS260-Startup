@@ -1,10 +1,10 @@
 .game {
     border-radius: 5px;
-    background-color: rgb(76, 86, 97);
+    background-color: rgb(76, 86, 97) !important;
     border: thick white;
     margin: 0.5em;
-    height: 185px;
-    width: 130px;
+    height: 190px;
+    width: 135px;
     flex: 0 0 auto
 }
 
@@ -13,4 +13,5 @@
     text-wrap: normal;
     font-size: small;
     margin-bottom: 0 !important;
+    padding: .05em !important;
 }

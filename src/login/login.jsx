@@ -8,7 +8,7 @@ import { AuthState } from './authState';
 export function Login({ userName, authState, onAuthChange }) {
   return (
     <main className='container-fluid text-center'>
-      <div>
+      <div class="login">
         {authState !== AuthState.Unknown && <h1>Welcome to Game Tracker</h1>}
         {authState === AuthState.Authenticated && (
           <Authenticated userName={userName} onLogout={() => onAuthChange(userName, AuthState.Unauthenticated)} />

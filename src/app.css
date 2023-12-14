@@ -47,6 +47,8 @@
     color: aliceblue;
     border: none;
     width: fit-content;
+    padding-left: 1em;
+
   }
 
   .form-control::placeholder {
@@ -57,6 +59,8 @@
     background-color: #17202A;
     color: aliceblue;
     border: none;
+    min-width: 2em;
+    justify-content: center;
   }
 
   footer a {
