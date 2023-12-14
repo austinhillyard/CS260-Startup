@@ -4,10 +4,16 @@ import { Login } from './login/login';
 import { Tracker } from './tracker/tracker';
 import { Sharer } from './sharer/sharer';
 import { Import } from './import/import';
+import { AuthState } from './login/authState';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
 export default function App() {
+
+  const [userName, setUserName] = React.useState(localStorage.getItem('userName') || '');
+  const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
+  const [authState, setAuthState] = React.useState(currentAuthState);
+
   return (
     <BrowserRouter>
         <div className='body bg-dark text-light'>
@@ -22,27 +28,46 @@ export default function App() {
                                 Login
                             </NavLink>
                         </li>
+                        {authState === AuthState.Authenticated && (
                         <li className='nav-item'>
                             <NavLink className="nav-link" to="tracker">
                                 Tracker
                             </NavLink>
                         </li>
+                        )}
+                        {authState === AuthState.Authenticated && (
                         <li className='nav-item'>
                             <NavLink className="nav-link" to="import">
                                 Import
                             </NavLink>
                         </li>
+                        )}
+                        {authState === AuthState.Authenticated && (
                         <li className='nav-item'>
                             <NavLink className="nav-link" to="sharer">
                                 Sharer
                             </NavLink>
                         </li>
+                        )}
                     </menu>
                 </nav>
             </header>
 
             <Routes>
-                <Route path='/' element={<Login />} exact />
+                <Route
+                    path='/'
+                    element={
+                    <Login
+                        userName={userName}
+                        authState={authState}
+                        onAuthChange={(userName, authState) => {
+                        setAuthState(authState);
+                        setUserName(userName);
+                        }}
+                    />
+                    }
+                    exact
+                />
                 <Route path='/tracker' element={<Tracker />} />
                 <Route path='/import' element={<Import />} />
                 <Route path='/sharer' element={<Sharer />} />

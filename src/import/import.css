@@ -13,6 +13,10 @@ img {
     background-color: #5e549d;
 }
 
+#import:active {
+    background-color: #2d265a;
+}
+
 #profilelink {
     background-color: #212b37;
     color: aliceblue;

@@ -2,11 +2,11 @@ const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
 socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
 socket.onopen = function () {
     let t = setInterval(function(){
-        if (ws.readyState != 1) {
+        if (socket.readyState != 1) {
             clearInterval(t);
             return;
         }
-        ws.send('{type:"ping"}');
+        socket.send('{type:"ping"}');
     }, 55000);
 };
 socket.onmessage = async (event) => {

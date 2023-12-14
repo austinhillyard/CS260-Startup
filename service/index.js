@@ -152,7 +152,9 @@ const { addUser, getUser } = require('./database');
 let apiKeys;
 
 try {
-  fs.readFile('key.json', 'utf8', function (err, data) {
+  const path = require('path');
+  const filePath = path.resolve(__dirname, 'key.json');
+  fs.readFile(filePath, 'utf8', function (err, data) {
     if (err) throw err;
     apiKeys = JSON.parse(data);
   });

@@ -1,0 +1,53 @@
+main {
+    flex: 1 85vh;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    background-color:#283747 !important;
+
+}
+
+main div {
+    flex: 1;
+    width: inherit;
+    margin: .5em;
+    background-color: #17202A;
+    border-radius: 6px;
+    padding: .5em !important;
+}
+
+main * {
+    padding: 0em !important;
+}
+
+.gamesTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gamesTop button {
+    align-self: flex-end;
+}
+
+button {
+    background-color: darkslateblue;
+    border: none;
+    padding: 1em !important;
+    margin: .5em;
+    text-align: center;
+    border-radius: .5em !important;
+    color: white;
+    font-family: sans-serif;
+}
+
+button:hover {
+    background-color: #5e549d;
+}
+
+@media screen and (orientation:portrait) {
+    main {
+      flex: 1 100vh;
+      flex-direction: column;
+    }
+  }

@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   background-color:#283747 !important;
-  height: auto;
+  height: 100vh;
 }
   
   header {
@@ -42,7 +42,23 @@
     padding: 0 0.3em;
   }
 
+  .form-control {
+    background-color: #17202A;
+    color: aliceblue;
+    border: none;
+    width: fit-content;
+  }
+
+  .form-control::placeholder {
+      color: rgb(113, 113, 113);
+  }
   
+  .input-group-text {
+    background-color: #17202A;
+    color: aliceblue;
+    border: none;
+  }
+
   footer a {
     float: right;
   }

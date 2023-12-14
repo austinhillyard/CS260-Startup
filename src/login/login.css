@@ -1,0 +1,17 @@
+.btn {
+    margin: 1em;
+}
+
+#login {
+    background-color: #502793;
+    border-color: #44188d;
+    height: fit-content;
+}
+
+#login:hover {
+    background-color: #5e549d;
+}
+
+#login:active {
+    background-color: #2d265a;
+}

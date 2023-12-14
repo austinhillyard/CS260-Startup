@@ -4,17 +4,19 @@ import { GameTimeView } from './gameTimeView';
 
 export function GameView({games, timeSort, viewId, timeFrameText}) {
   
+  const now = Date.now();
+  const oneWeekGames = [];
+  const oneMonthGames = [];
+  const threeMonthGames = [];
+  const sixMonthGames = [];
+  const oneYearGames = [];
+  const moreThanYearGames = [];
+  const neverPlayed = [];
+
   if (timeSort) {
 
-    const oneWeekGames = [];
-    const oneMonthGames = [];
-    const threeMonthGames = [];
-    const sixMonthGames = [];
-    const oneYearGames = [];
-    const moreThanYearGames = [];
-    const neverPlayed = [];
-
     putGamesInTimeSlots(games);
+    localStorage.setItem("oneWeekGames", JSON.stringify(oneWeekGames));
   
   return (
     <div id={viewId} className='container-fluid text-center gameView'>
