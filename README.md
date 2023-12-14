@@ -110,3 +110,9 @@ This deliverable includes implementing basic WebSocket functionality on the new 
 * **Frontend Display** - Frontend connects to the websocket, and receives messages from the backend.
 * **Data Sent over WebSocket** - Upon a user clicking the "Share" button, the user's games from this week are shared to all other connections in a JSON object.
 * **WebSocket Data Displayed** - When the user receives a message, the data is displayed in the main "view" element. The display mirrors the tracker page's display for game cards, and uses the same kind of function to display them.
+
+# React Deliverable
+This deliverable includes converting structure to React.
+* **Multiple Functional Components** - Each page is rendered dynamically using react. Several of those pages use multiple nested components such as the tracker and login in functionality.
+* **React Router** - Router renders each page as it is clicked, and prevents accessing the other tabs if not authenticated.
+* **React Hooks** - React State is used in the Sharer component and Login Component. React useEffect is also used in the Sharer component.
