@@ -2660,6 +2660,19 @@ Cookie: myAppCookie=tasty
 
 Learn more about [cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)
 
+### Cookie Attributes:
+
+**Domain**
+  * `Domain` specifies which server can receive a cookie. If you specify a domain, all of its sub domains will be able to receive cookies.
+  - If you don't specify a cookie, cookies are only available on the server, and not its sub domains.
+
+**Path**
+  * `Path` indicates a URL path that must exist in the requested URL in order to send the Cookie header.
+**httpOnly**
+  - Tells the browser to not let JavaScript read the cookie.
+**sameSite:**
+  - Will only return the cookie to the domain that generated it.
+
 ### HTTP Versions
 | Year | Version | Features                                        |
 | ---- | ------- | ----------------------------------------------- |
@@ -3418,6 +3431,17 @@ db.house.find({ $or: [(beds: { $lt: 3 }), (price: { $lt: 1000 })] });
 // find houses with the text 'modern' or 'beach' in the summary
 db.house.find({ summary: /(modern|beach)/i });
 ```
+
+### Operators
+- `$gt` Greater than
+- `$gte` Greater than or equal
+- `$lt` Less than or equal
+- `$lte` Less than or equal
+  - 
+- `$eq` Equals
+  -`{ <field>: { $eq: <value> } }`
+- `$in` Any value in array
+  - { field: { $in: [<value1>, <value2>, ... <valueN> ] } }
 
 ### Using Mongo:
 You can use a `MongoClient` object to make a client connection to the database server.
@@ -4805,7 +4829,9 @@ ReactDOM.render(<Survey />, document.getElementById('root'));
 ```
 
 ## React Hooks
-React hooks allow React function style components to be able to do eeverything that a class style component can do and more. New features in React are also implemented using Hooks.
+React hooks allow React function style components to be able to do everything that a class style component can do and more. New features in React are also implemented using Hooks.
+
+The main function of React hooks is to allow Function components to be able to access state.
 
  Function styles are the preferred way to use React these days.
 
@@ -5097,3 +5123,22 @@ The basic process for converting original html and JS to a component is as follo
 - Create child components as necessary. For example, a `SimonGame` and `SimonButton` component.
 
 
+# Final Review
+1. Ports
+  - HTTP: 80
+  - HTTPS: 443
+  - SSH: 22
+2. The HTTP Codes follow this format:
+  - 1xx - Informational.
+  - 2xx - Success.
+  - 3xx - Redirect to some other location, or that the previously cached resource is still valid.
+  - 4xx - Client errors. The request is invalid.
+  - 5xx - Server errors. The request cannot be satisfied due to an error on the server.
+3. HTTP header `content-type`, Specify the format of the response content following standar MIME types
+4. Cookie attributes:
+  - HTTPOnly: Tells th ebrowser to not let JavaScript read the cookie.
+  - sameSite: Will only return the cookie to the domain that generated it.
+  * `Domain` specifies which server can receive a cookie. If you specify a domain, all of its sub domains will be able to receive cookies.
+    - If you don't specify a cookie, cookies are only available on the server, and not its sub domains.
+  * `Path` indicates a URL path that must exist in the requested URL in order to send the Cookie header
+8. You should hash user's passwords and store them in the database
